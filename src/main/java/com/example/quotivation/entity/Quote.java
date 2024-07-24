@@ -1,8 +1,6 @@
 package com.example.quotivation.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -19,4 +17,10 @@ public class Quote {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @ManyToOne
+    private Category category;
+
+    @ManyToOne
+    private Author author;
 }
