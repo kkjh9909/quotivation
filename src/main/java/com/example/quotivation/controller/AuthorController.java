@@ -25,7 +25,7 @@ public class AuthorController {
         AuthorListInfo response = authorService.getAllAuthors(pageable, order);
 
         if(response.getTotalPages() <= pageable.getPageNumber())
-            return String.format("redirect:/authors?page=%d", response.getTotalPages());
+            return String.format("redirect:/authors?page=%d&order=%s", response.getTotalPages(), order);
 
         model.addAttribute("totalPages", response.getTotalPages());
         model.addAttribute("authors", response.getAuthors());
