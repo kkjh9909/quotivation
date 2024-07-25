@@ -12,11 +12,13 @@ public class CategoryInfo {
 
     private Long id;
     private String name;
+    private int count;
 
     public static CategoryInfo make(Category category) {
         return CategoryInfo.builder()
                 .id(category.getId())
                 .name(category.getName())
+                .count(category.getQuoteCount())
                 .build();
     }
 }

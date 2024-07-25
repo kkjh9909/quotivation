@@ -1,10 +1,13 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.category.response.CategoryInfo;
+import com.example.quotivation.dto.category.response.CategoryListInfo;
 import com.example.quotivation.entity.Category;
 import com.example.quotivation.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,5 +23,16 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll(PageRequest.of(0, 10)).getContent();
 
         return categories.stream().map(CategoryInfo::make).collect(Collectors.toList());
+    }
+
+    public CategoryListInfo getAllCategories(Pageable pageable, String order) {
+        Page<Category> categories;
+        if(order.equals("popular"))
+            categories = categoryRepository.findAllByOrderByQuoteCountDesc(pageable);
+        else
+            categories = categoryRepository.findAllByOrderByName(pageable);
+
+        return new CategoryListInfo(categories.getContent().stream().map(CategoryInfo::make).collect(Collectors.toList()),
+                categories.getTotalPages());
     }
 }
