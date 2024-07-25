@@ -1,15 +1,21 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.quote.response.LatestQuote;
+import com.example.quotivation.dto.quote.response.QuoteListByAuthor;
+import com.example.quotivation.dto.quote.response.QuoteListByAuthorInfo;
 import com.example.quotivation.dto.quote.response.TodayQuote;
+import com.example.quotivation.entity.Author;
 import com.example.quotivation.entity.Quote;
+import com.example.quotivation.repository.AuthorRepository;
 import com.example.quotivation.repository.QuoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -18,6 +24,7 @@ import java.util.stream.Collectors;
 public class QuoteService {
 
     private final QuoteRepository quoteRepository;
+    private final AuthorRepository authorRepository;
 
     public TodayQuote getTodayQuote() {
         long count = quoteRepository.count();
@@ -34,5 +41,14 @@ public class QuoteService {
 
 
         return quotes.stream().map(LatestQuote::make).collect(Collectors.toList());
+    }
+
+    public QuoteListByAuthorInfo getQuotesByAuthor(Long authorId, Pageable pageable) {
+        Optional<Author> author = authorRepository.findById(authorId);
+
+        Page<Quote> quotes = quoteRepository.findByAuthor(author.get(), pageable);
+
+        return new QuoteListByAuthorInfo(quotes.stream().map(QuoteListByAuthor::make).collect(Collectors.toList()),
+                quotes.getTotalElements(), quotes.getTotalPages());
     }
 }
