@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <title>저자</title>
+    <script type="text/javascript" th:inline="javascript">
+		function sortCategory() {
+			const option = document.querySelector('select[name="sort"]').value;
+
+			if(option === "popular")
+				window.location="/authors?order=" + 'popular'
+			else
+				window.location="/authors?order=" + 'alpha'
+		}
+    </script>
+
+    <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <div class="row">
+                    <div class="col-auto">
+                        저자
+                    </div>
+                    <div class="col text-end">
+                        <select name="sort" id="sort" class="form-select-sm" onchange="sortCategory()">
+                            <option th:selected="${sort == 'alpha'}" value="alpha">가나다순</option>
+                            <option th:selected="${sort == 'popular'}" value="popular">인기순</option>
+                        </select>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="author : ${authors}">
+            <tr>
+                <th th:onclick="'location.href=\'' + @{'/author/' + ${author.id}} + '\';'" class="link-primary">
+                    <div class="row">
+                        <div class="col-auto">
+                            <span th:text="${author.name}"></span>
+                            <span th:text="'(' + ${author.count} + ')'"></span>
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary">바로가기</button>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <div class="text-center" th:if="${totalPages < 1}">
+        <img src="/image/empty.PNG" alt="이미지" class="img-fluid">
+        검색 결과가 없어요
+    </div>
+    <nav aria-label="Page navigation example"  th:if="${totalPages > 0}">
+        <ul class="pagination justify-content-center">
+            <li th:if="${currentPage > 1}" th:class="page-item">
+                <a th:class="page-link"
+                   th:href="@{/authors(page=${currentPage - 1}, order=${sort})}">
+                    Previous
+                </a>
+            </li>
+
+            <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalPages))}"
+                th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
+                <a th:class="page-link" th:text="${page}"
+                   th:href="@{/authors(page=${page}, order=${sort})}"
+                ></a>
+            </li>
+            <li th:if="${currentPage < totalPages}" th:class="page-item">
+                <a th:class="page-link"
+                   th:href="@{/authors(page=${currentPage + 1}, order=${sort})}">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+<script th:inline="javascript">
+</script>
+</body>
+</html>
