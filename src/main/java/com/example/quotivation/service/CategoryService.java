@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,5 +35,11 @@ public class CategoryService {
 
         return new CategoryListInfo(categories.getContent().stream().map(CategoryInfo::make).collect(Collectors.toList()),
                 categories.getTotalPages());
+    }
+
+    public String getCategoryName(Long categoryId) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        return category.get().getName();
     }
 }

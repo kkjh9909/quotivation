@@ -1,12 +1,14 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.quote.response.LatestQuote;
-import com.example.quotivation.dto.quote.response.QuoteListByAuthor;
-import com.example.quotivation.dto.quote.response.QuoteListByAuthorInfo;
+import com.example.quotivation.dto.quote.response.QuoteList;
+import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.dto.quote.response.TodayQuote;
 import com.example.quotivation.entity.Author;
+import com.example.quotivation.entity.Category;
 import com.example.quotivation.entity.Quote;
 import com.example.quotivation.repository.AuthorRepository;
+import com.example.quotivation.repository.CategoryRepository;
 import com.example.quotivation.repository.QuoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ public class QuoteService {
 
     private final QuoteRepository quoteRepository;
     private final AuthorRepository authorRepository;
+    private final CategoryRepository categoryRepository;
 
     public TodayQuote getTodayQuote() {
         long count = quoteRepository.count();
@@ -43,12 +46,21 @@ public class QuoteService {
         return quotes.stream().map(LatestQuote::make).collect(Collectors.toList());
     }
 
-    public QuoteListByAuthorInfo getQuotesByAuthor(Long authorId, Pageable pageable) {
+    public QuoteListInfo getQuotesByAuthor(Long authorId, Pageable pageable) {
         Optional<Author> author = authorRepository.findById(authorId);
 
         Page<Quote> quotes = quoteRepository.findByAuthor(author.get(), pageable);
 
-        return new QuoteListByAuthorInfo(quotes.stream().map(QuoteListByAuthor::make).collect(Collectors.toList()),
+        return new QuoteListInfo(quotes.stream().map(QuoteList::make).collect(Collectors.toList()),
+                quotes.getTotalElements(), quotes.getTotalPages());
+    }
+
+    public QuoteListInfo getQuotesByCategory(Long categoryId, Pageable pageable) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        Page<Quote> quotes = quoteRepository.findByCategory(category.get(), pageable);
+
+        return new QuoteListInfo(quotes.stream().map(QuoteList::make).collect(Collectors.toList()),
                 quotes.getTotalElements(), quotes.getTotalPages());
     }
 }
