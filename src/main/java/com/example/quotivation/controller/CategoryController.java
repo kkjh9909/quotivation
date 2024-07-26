@@ -27,7 +27,7 @@ public class CategoryController {
                                     @PageableDefault(size = 10) Pageable pageable) {
         CategoryListInfo response = categoryService.getAllCategories(pageable, order);
 
-        if(response.getTotalPages() <= pageable.getPageNumber())
+        if(response.getTotalPages() < pageable.getPageNumber())
             return String.format("redirect:/categories?page=%d&order=%s", response.getTotalPages(), order);
 
         model.addAttribute("totalPages", response.getTotalPages());

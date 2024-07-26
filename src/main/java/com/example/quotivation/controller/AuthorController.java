@@ -26,7 +26,7 @@ public class AuthorController {
                                 @PageableDefault(size = 10) Pageable pageable) {
         AuthorListInfo response = authorService.getAllAuthors(pageable, order);
 
-        if(response.getTotalPages() <= pageable.getPageNumber())
+        if(response.getTotalPages() < pageable.getPageNumber())
             return String.format("redirect:/authors?page=%d&order=%s", response.getTotalPages(), order);
 
         model.addAttribute("totalPages", response.getTotalPages());
@@ -44,7 +44,7 @@ public class AuthorController {
         QuoteListInfo response = quoteService.getQuotesByAuthor(authorId, pageable);
         String author = authorService.getAuthorName(authorId);
 
-        if(response.getTotalPages() <= pageable.getPageNumber())
+        if(response.getTotalPages() < pageable.getPageNumber())
             return String.format("redirect:/author/%d?page=%d", authorId, response.getTotalPages());
 
         model.addAttribute("quotes", response.getQuotes());
