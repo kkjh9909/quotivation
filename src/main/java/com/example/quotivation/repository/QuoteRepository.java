@@ -14,4 +14,6 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
     Page<Quote> findByAuthor(Author author, Pageable pageable);
 
     Page<Quote> findByCategory(Category category, Pageable pageable);
+
+    Page<Quote> findByContentContaining(String query, Pageable pageable);
 }

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <title th:text="${query}">Document</title>
+    <script type="text/javascript" th:inline="javascript">
+		function sortCategory() {
+			const option = document.querySelector('select[name="sort"]').value;
+
+			if(option === "popular")
+				window.location="/authors?order=" + 'popular'
+			else
+				window.location="/authors?order=" + 'alpha'
+		}
+
+		function searchQuote() {
+			const word = document.getElementById("word").value;
+
+			if(word.length < 2)
+				alert("최소 2글자 이상의 검색어를 입력해주세요.")
+			else
+				location.href = "/search?query=" + word
+		}
+
+		function handleKeyPress(event) {
+			if (event.key === 'Enter')
+				searchQuote();
+		}
+    </script>
+
+    <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col">
+            <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" id="word" onkeypress="handleKeyPress(event)">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-success" th:onclick="searchQuote()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <div class="row">
+                    <div class="col-auto">
+                        <span th:text="${query}"></span>
+                        에 대한 검색 결과
+                        <span th:text="'(' + ${count} + ')'"></span>
+                    </div>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="quote : ${quotes}">
+            <tr>
+                <th th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'" class="link-primary">
+                    <div class="row">
+                        <div class="simply-text">
+                            <span th:text="${quote.content}"></span>
+                        </div>
+                        <div class="text-end">
+                            <span th:text="'-' + ${quote.author} + '-'"></span>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <div class="text-center" th:if="${totalPages < 1}">
+        <img src="/image/empty.PNG" alt="이미지" class="img-fluid">
+        <h3>검색 결과가 없어요~~</h3>
+    </div>
+    <nav aria-label="Page navigation example" th:if="${totalPages > 0}">
+        <ul class="pagination justify-content-center">
+            <!-- 이전 버튼 -->
+            <li th:if="${currentPage > 1}" th:class="page-item">
+                <a th:class="page-link"
+                   th:href="@{/search(page=${currentPage - 1}, query=${query})}">
+                    Previous
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalPages))}"
+                th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
+                <a th:class="page-link" th:text="${page}"
+                   th:href="@{/search(page=${page}, query=${query})}"
+                ></a>
+            </li>
+            <li th:if="${currentPage < totalPages}" th:class="page-item">
+                <a th:class="page-link"
+                   th:href="@{/search(page=${currentPage + 1}, query=${query})}">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+<script th:inline="javascript">
+</script>
+</body>
+</html>

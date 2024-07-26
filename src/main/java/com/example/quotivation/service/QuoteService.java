@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -77,5 +78,15 @@ public class QuoteService {
 
         category.get().increaseQuoteCount();
         author.get().increaseQuoteCount();
+    }
+
+    public QuoteListInfo searchQuote(String query, Pageable pageable) {
+        Page<Quote> quotes = quoteRepository.findByContentContaining(query, pageable);
+
+        if(quotes.isEmpty())
+            return new QuoteListInfo(new ArrayList<>(),0L, 0);
+        else
+            return new QuoteListInfo(quotes.getContent().stream().map(QuoteList::make).collect(Collectors.toList()),
+                    quotes.getTotalElements(), quotes.getTotalPages());
     }
 }
