@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
     Page<Quote> findByOrderByUpdatedAtDesc(Pageable pageable);
 
@@ -16,4 +18,6 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
     Page<Quote> findByCategory(Category category, Pageable pageable);
 
     Page<Quote> findByContentContaining(String query, Pageable pageable);
+
+    List<Quote> findTop10ByCategoryOrderByUpdatedAtDesc(Category category);
 }

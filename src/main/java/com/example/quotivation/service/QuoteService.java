@@ -1,10 +1,7 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.quote.request.AddQuoteRequest;
-import com.example.quotivation.dto.quote.response.LatestQuote;
-import com.example.quotivation.dto.quote.response.QuoteList;
-import com.example.quotivation.dto.quote.response.QuoteListInfo;
-import com.example.quotivation.dto.quote.response.TodayQuote;
+import com.example.quotivation.dto.quote.response.*;
 import com.example.quotivation.entity.Author;
 import com.example.quotivation.entity.Category;
 import com.example.quotivation.entity.Quote;
@@ -88,5 +85,22 @@ public class QuoteService {
         else
             return new QuoteListInfo(quotes.getContent().stream().map(QuoteList::make).collect(Collectors.toList()),
                     quotes.getTotalElements(), quotes.getTotalPages());
+    }
+
+    public QuoteDetail getQuoteDetail(Long quoteId) {
+        Optional<Quote> quote = quoteRepository.findById(quoteId);
+        
+        return QuoteDetail.make(quote.get());
+    }
+
+    public List<RelatedQuote> getRelatedQuotes(Long quoteId) {
+        Optional<Quote> quote = quoteRepository.findById(quoteId);
+
+        Category category = quote.get().getCategory();
+
+        return quoteRepository.findTop10ByCategoryOrderByUpdatedAtDesc(category).stream()
+                .filter(q -> q.getId() != quoteId)
+                .map(RelatedQuote::make)
+                .collect(Collectors.toList());
     }
 }

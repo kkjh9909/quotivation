@@ -4,7 +4,9 @@ import com.example.quotivation.dto.author.response.AuthorInfo;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.dto.category.response.CategoryInfo;
 import com.example.quotivation.dto.quote.request.AddQuoteRequest;
+import com.example.quotivation.dto.quote.response.QuoteDetail;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
+import com.example.quotivation.dto.quote.response.RelatedQuote;
 import com.example.quotivation.service.AuthorService;
 import com.example.quotivation.service.CategoryService;
 import com.example.quotivation.service.QuoteService;
@@ -13,10 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -72,5 +71,17 @@ public class QuoteController {
         model.addAttribute("count", response.getCount());
 
         return "quotes-search-page";
+    }
+
+    @GetMapping("/quote/{quoteId}")
+    public String getQuoteDetailPage(Model model,
+                                     @PathVariable Long quoteId) {
+        QuoteDetail quoteDetail = quoteService.getQuoteDetail(quoteId);
+        List<RelatedQuote> relatedQuotes = quoteService.getRelatedQuotes(quoteId);
+
+        model.addAttribute("quote", quoteDetail);
+        model.addAttribute("relatedQuotes", relatedQuotes);
+
+        return "quote-detail-page";
     }
 }
