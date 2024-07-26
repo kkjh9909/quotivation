@@ -1,5 +1,6 @@
 package com.example.quotivation.service;
 
+import com.example.quotivation.dto.quote.request.AddQuoteRequest;
 import com.example.quotivation.dto.quote.response.LatestQuote;
 import com.example.quotivation.dto.quote.response.QuoteList;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,5 +64,18 @@ public class QuoteService {
 
         return new QuoteListInfo(quotes.stream().map(QuoteList::make).collect(Collectors.toList()),
                 quotes.getTotalElements(), quotes.getTotalPages());
+    }
+
+    @Transactional
+    public void addQuote(AddQuoteRequest quoteRequest) {
+        Optional<Category> category = categoryRepository.findById(quoteRequest.getCategoryId());
+        Optional<Author> author = authorRepository.findById(quoteRequest.getAuthorId());
+
+        Quote quote = Quote.create(category.get(), author.get(), quoteRequest.getContent());
+
+        quoteRepository.save(quote);
+
+        category.get().increaseQuoteCount();
+        author.get().increaseQuoteCount();
     }
 }

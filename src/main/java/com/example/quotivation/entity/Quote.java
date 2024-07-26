@@ -23,4 +23,19 @@ public class Quote {
 
     @ManyToOne
     private Author author;
+
+    public static Quote create(Category category, Author author, String content) {
+        Quote quote = new Quote();
+
+        quote.content = content;
+        LocalDateTime time = LocalDateTime.now();
+
+        quote.createdAt = time;
+        quote.updatedAt = time;
+
+        quote.category = category;
+        quote.author = author;
+
+        return quote;
+    }
 }

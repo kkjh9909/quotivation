@@ -23,4 +23,8 @@ public class Author {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public void increaseQuoteCount() {
+        this.quoteCount++;
+    }
 }
