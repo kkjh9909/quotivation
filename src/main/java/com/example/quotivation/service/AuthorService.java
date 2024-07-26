@@ -44,4 +44,10 @@ public class AuthorService {
 
         return author.get().getName();
     }
+
+    public List<AuthorInfo> getAuthorsForAddQuote() {
+        List<Author> authors = authorRepository.findAll();
+
+        return authors.stream().map(AuthorInfo::make).collect(Collectors.toList());
+    }
 }

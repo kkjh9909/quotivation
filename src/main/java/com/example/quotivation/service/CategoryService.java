@@ -42,4 +42,10 @@ public class CategoryService {
 
         return category.get().getName();
     }
+
+    public List<CategoryInfo> getCategoriesForAddQuote() {
+        List<Category> categories = categoryRepository.findAll();
+
+        return categories.stream().map(CategoryInfo::make).collect(Collectors.toList());
+    }
 }
