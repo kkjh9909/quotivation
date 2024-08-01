@@ -24,6 +24,8 @@ public class Quote {
     @ManyToOne
     private Author author;
 
+    public Quote() {}
+
     public static Quote create(Category category, Author author, String content) {
         Quote quote = new Quote();
 
