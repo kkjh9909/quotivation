@@ -1,7 +1,9 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.post.request.PostWriteReq;
+import com.example.quotivation.dto.post.response.PostDetailRes;
 import com.example.quotivation.dto.post.response.PostsSummaryRes;
+import com.example.quotivation.dto.post.response.RecentPostsRes;
 import com.example.quotivation.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +13,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,6 +51,18 @@ public class PostController {
         String ipAddress = getIpAddress(request);
 
         postService.writePost(postWriteReq, ipAddress);
+    }
+
+    @GetMapping("/post/{postId}")
+    public String getPostDetailPage(Model model,
+                                    @PathVariable Long postId) {
+        PostDetailRes response = postService.getPostDetail(postId);
+        List<RecentPostsRes> recentPosts = postService.getRecentPosts(postId);
+
+        model.addAttribute("postDetails", response);
+        model.addAttribute("recentPosts", recentPosts);
+
+        return "post-detail-page";
     }
 
     private String getIpAddress(HttpServletRequest request) {
