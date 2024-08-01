@@ -1,5 +1,6 @@
 package com.example.quotivation.service;
 
+import com.example.quotivation.dto.post.request.PostWriteReq;
 import com.example.quotivation.dto.post.response.PostsSummaryInfo;
 import com.example.quotivation.dto.post.response.PostsSummaryRes;
 import com.example.quotivation.entity.Post;
@@ -21,5 +22,11 @@ public class PostService {
         Page<Post> posts = postRepository.findAll(pageable);
 
         return new PostsSummaryRes(posts.getTotalPages(), posts.stream().map(PostsSummaryInfo::make).collect(Collectors.toList()));
+    }
+
+    public void writePost(PostWriteReq postWriteReq, String ipAddress) {
+        Post post = Post.create(postWriteReq, ipAddress);
+
+        postRepository.save(post);
     }
 }

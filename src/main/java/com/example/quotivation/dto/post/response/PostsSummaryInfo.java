@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -17,7 +18,7 @@ public class PostsSummaryInfo {
     private String writer;
     private int hits;
     private String address;
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     public static PostsSummaryInfo make(Post post) {
         return PostsSummaryInfo.builder()
@@ -26,7 +27,7 @@ public class PostsSummaryInfo {
                 .writer(post.getWriter())
                 .hits(post.getHits())
                 .address(post.getAddress())
-                .createdAt(post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 }
