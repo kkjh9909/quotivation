@@ -28,13 +28,13 @@
         <tbody>
         <th:block th:each="post: ${posts}">
             <tr th:onclick="'location.href=\'' + @{'/post/' + ${post.id}} + '\';'">
-                <td th:text="${post.number}">00</td>
+                <td th:text="${post.id}">00</td>
                 <td th:text="${post.title}">00</td>
                 <td th:text="${post.writer}">00</td>
-                <td th:if="${#temporals.format(post.date, 'yyyyMMdd') == #temporals.format(#temporals.createNow(), 'yyyyMMdd')}"
-                    th:text="${#temporals.format(post.date, 'HH:mm')}">00:00</td>
-                <td th:unless="${#temporals.format(post.date, 'yyyyMMdd') == #temporals.format(#temporals.createNow(), 'yyyyMMdd')}"
-                    th:text="${#temporals.format(post.date, 'MM/dd')}">00/00</td>
+                <td th:if="${#temporals.format(post.createdAt, 'yyyyMMdd') == #temporals.format(#temporals.createNow(), 'yyyyMMdd')}"
+                    th:text="${#temporals.format(post.createdAt, 'HH:mm')}">00:00</td>
+                <td th:unless="${#temporals.format(post.createdAt, 'yyyyMMdd') == #temporals.format(#temporals.createNow(), 'yyyyMMdd')}"
+                    th:text="${#temporals.format(post.createdAt, 'MM/dd')}">00/00</td>
                 <td th:text="${post.hits}">00</td>
             </tr>
         </th:block>
