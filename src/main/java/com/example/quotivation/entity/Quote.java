@@ -7,9 +7,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@SequenceGenerator(
+        name = "quote_sequence",
+        sequenceName = "quote_id_sequence",
+        initialValue = 50000000,
+        allocationSize = 1
+)
 public class Quote {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "quote_sequence")
     private Long id;
 
     private String content;

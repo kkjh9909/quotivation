@@ -1,17 +1,21 @@
 package com.example.quotivation.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@SequenceGenerator(
+        name = "category_sequence",
+        sequenceName = "category_id_sequence",
+        initialValue = 3000000,
+        allocationSize = 1
+)
 public class Category {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "category_sequence")
     private Long id;
 
     private String name;
