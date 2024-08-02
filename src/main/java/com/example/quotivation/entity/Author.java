@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
         initialValue = 2000000,
         allocationSize = 1
 )
-public class Author {
+public class Author extends Timestamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "author_sequence")
     private Long id;

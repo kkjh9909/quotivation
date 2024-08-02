@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
         initialValue = 3000000,
         allocationSize = 1
 )
-public class Category {
+public class Category extends Timestamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "category_sequence")
     private Long id;

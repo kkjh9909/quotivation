@@ -1,19 +1,23 @@
 package com.example.quotivation.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @SequenceGenerator(
         name = "quote_sequence",
         sequenceName = "quote_id_sequence",
         initialValue = 50000000,
         allocationSize = 1
 )
-public class Quote {
+public class Quote extends Timestamp {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "quote_sequence")
     private Long id;
@@ -33,17 +37,10 @@ public class Quote {
     public Quote() {}
 
     public static Quote create(Category category, Author author, String content) {
-        Quote quote = new Quote();
-
-        quote.content = content;
-        LocalDateTime time = LocalDateTime.now();
-
-        quote.createdAt = time;
-        quote.updatedAt = time;
-
-        quote.category = category;
-        quote.author = author;
-
-        return quote;
+        return Quote.builder()
+                .category(category)
+                .author(author)
+                .content(content)
+                .build();
     }
 }
