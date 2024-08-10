@@ -1,5 +1,6 @@
 package com.example.quotivation.entity;
 
+import com.example.quotivation.dto.user.request.UserSignUpReq;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,5 +37,14 @@ public class User extends Timestamp {
         this.email = email;
         this.role = role;
         this.picture = picture;
+    }
+
+    public static User createUser(UserSignUpReq request, String password) {
+        return User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(password)
+                .role("ROLE_USER")
+                .build();
     }
 }
