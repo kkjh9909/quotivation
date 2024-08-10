@@ -47,24 +47,6 @@ public class JwtProvider {
                 .compact();
     }
 
-//    public Authentication getAuthentication(String token) {
-//        String userId = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-//        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
-//
-//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-//    }
-
-//    public boolean verifyToken(String token) {
-//        try {
-//            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-//            return true;
-//        } catch (ExpiredJwtException e) {
-//            throw new TokenExpiredException("Token expired", e);
-//        } catch (SignatureException e) {
-//            throw new InvalidTokenException("Invalid token", e);
-//        }
-//    }
-
     public String resolveToken(HttpServletRequest request) {
         String token = getToken(request);
 
