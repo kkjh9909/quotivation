@@ -1,3 +1,5 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="header" class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -20,9 +22,16 @@
                         <a class="nav-link" href="/posts">문의하기</a>
                     </li>
                 </ul>
-                <button class="btn" onclick="window.location.href='/login'">
-                    로그인
-                </button>
+                <th:block sec:authorize="isAnonymous()">
+                    <!-- 인증 받지 않음 -->
+                    <a href="/login" class="btn btn-outline-grey">로그인</a>
+                    <a href="/signup" class="btn btn-primary">회원가입</a>
+                </th:block>
+
+                <th:block sec:authorize="isAuthenticated()">
+                    <!-- 인증 받음 -->
+                    <a href="/logout" class="icons me-2 ms-2">로그아웃</a>
+                </th:block>
             </div>
         </div>
     </nav>

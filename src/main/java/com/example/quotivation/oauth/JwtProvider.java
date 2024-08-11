@@ -47,6 +47,23 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String createAccessToken(Authentication authentication) {
+        String name = authentication.getName();
+        Claims claims = Jwts.claims().setSubject(name);
+
+        claims.put("name", name);
+
+        Date now = new Date();
+        Date expiredDate = new Date(now.getTime() + 30L * 24 * 60 * 60 * 1000);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiredDate)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
     public String resolveToken(HttpServletRequest request) {
         String token = getToken(request);
 
