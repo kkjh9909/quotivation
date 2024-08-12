@@ -11,6 +11,7 @@ import lombok.Data;
 public class TodayQuote {
 
     private Long id;
+    private Long authorId;
     private String content;
     private String author;
     private String photo;
@@ -18,6 +19,7 @@ public class TodayQuote {
     public static TodayQuote make(Quote quote) {
         return TodayQuote.builder()
                 .id(quote.getId())
+                .authorId(quote.getAuthor().getId())
                 .content(quote.getContent())
                 .author(quote.getAuthor().getName())
                 .photo(quote.getAuthor().getPhoto())

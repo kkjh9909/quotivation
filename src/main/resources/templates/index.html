@@ -55,7 +55,7 @@
                         <p th:text="${todayQuote.content}">"오늘 할 일을 내일로 미루지 마라"</p>
                     </div>
                     <div class="text-end">
-                        <a th:href="@{'/author/' + ${todayQuote.id}}">
+                        <a th:href="@{'/author/' + ${todayQuote.authorId}}">
                             <p th:text="'-' + ${todayQuote.author} + '-'">저자</p>
                         </a>
                     </div>
