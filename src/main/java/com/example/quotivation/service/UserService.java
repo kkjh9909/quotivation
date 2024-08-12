@@ -1,19 +1,16 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.user.request.UserSignUpReq;
-import com.example.quotivation.dto.user.response.UserLoginReq;
+import com.example.quotivation.security.PrincipalDetails;
 import com.example.quotivation.entity.User;
 import com.example.quotivation.repository.UserRepository;
-import com.example.quotivation.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.LoginException;
 import java.util.Optional;
 
 @Service
@@ -34,7 +31,7 @@ public class UserService implements UserDetailsService {
 
         User validUser = user.get();
 
-        return new CustomUserDetails(validUser);
+        return new PrincipalDetails(validUser);
     }
 
     public void signup(UserSignUpReq request) {

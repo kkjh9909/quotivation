@@ -1,6 +1,6 @@
 package com.example.quotivation.service;
 
-import com.example.quotivation.entity.PrincipalDetails;
+import com.example.quotivation.security.PrincipalDetails;
 import com.example.quotivation.entity.User;
 import com.example.quotivation.oauth.GoogleUserInfo;
 import com.example.quotivation.oauth.NaverUserInfo;

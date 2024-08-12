@@ -1,5 +1,6 @@
-package com.example.quotivation.entity;
+package com.example.quotivation.security;
 
+import com.example.quotivation.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
