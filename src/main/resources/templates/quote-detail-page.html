@@ -22,6 +22,17 @@
 			}
 		}
 
+		function clickDislikeButton() {
+			const likeIcon = document.querySelector('#dislikeButton i.material-icons').textContent.trim();
+
+			if (likeIcon === "thumb_down") {
+				unDislikeQuote();
+			}
+			else {
+				dislikeQuote();
+			}
+        }
+
         function likeQuote() {
 			const quoteId = window.location.pathname.split("/").pop();
 
@@ -55,6 +66,46 @@
 				.then(response => response.text())
 				.then(html => {
 					const likeButtonElement = document.querySelector('#likeButton');
+					likeButtonElement.outerHTML = html;
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+
+		function dislikeQuote() {
+			const quoteId = window.location.pathname.split("/").pop();
+
+			fetch(`/user/quote/dislike/${quoteId}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({}),
+			})
+				.then(response => response.text())
+				.then(html => {
+					const likeButtonElement = document.querySelector('#dislikeButton');
+					likeButtonElement.outerHTML = html;
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+
+		function unDislikeQuote() {
+			const quoteId = window.location.pathname.split("/").pop();
+
+			fetch(`/user/quote/dislike/${quoteId}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({}),
+			})
+				.then(response => response.text())
+				.then(html => {
+					const likeButtonElement = document.querySelector('#dislikeButton');
 					likeButtonElement.outerHTML = html;
 				})
 				.catch(error => {
@@ -129,7 +180,7 @@
                             </button>
                         </div>
                         <div id="dislikeButton" class="col">
-                            <button class="btn">
+                            <button class="btn" onclick="clickDislikeButton()">
                                 <i class="material-icons"
                                    th:switch="${isDislike}">
                                     <span th:case="true">thumb_down</span>
