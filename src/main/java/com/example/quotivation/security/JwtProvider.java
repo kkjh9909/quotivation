@@ -1,7 +1,10 @@
-package com.example.quotivation.oauth;
+package com.example.quotivation.security;
 
 import com.example.quotivation.entity.User;
 
+import com.example.quotivation.exception.response.InvalidTokenException;
+import com.example.quotivation.exception.response.TokenExpiredException;
+import com.example.quotivation.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,10 +28,12 @@ import java.util.Date;
 public class JwtProvider {
 
     private final Key key;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtProvider(@Value("${jwt.secret}") String key) {
+    public JwtProvider(@Value("${jwt.secret}") String key, CustomUserDetailsService customUserDetailsService) {
         byte[] keyBytes = Decoders.BASE64.decode(key);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     public String createAccessToken(User user) {
@@ -45,6 +51,24 @@ public class JwtProvider {
                 .setExpiration(expiredDate)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+    }
+
+    public Authentication getAuthentication(String token) {
+        String userId = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public boolean verifyToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token expired", e);
+        } catch (SignatureException e) {
+            throw new InvalidTokenException("Invalid token", e);
+        }
     }
 
     public String createAccessToken(Authentication authentication) {
@@ -69,11 +93,21 @@ public class JwtProvider {
 
         if(token != null && token.startsWith("Bearer "))
             return token.substring(7);
+        else if(token != null)
+            return token;
 
         return null;
     }
 
     private String getToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        for(Cookie cookie : cookies) {
+            if("access_token".equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+
         return request.getHeader("Authorization");
     }
 }
