@@ -37,9 +37,9 @@ public class JwtProvider {
     }
 
     public String createAccessToken(User user) {
-        String userId = String.valueOf(user.getId());
-        Claims claims = Jwts.claims().setSubject(userId);
+        Claims claims = Jwts.claims().setSubject(String.valueOf(user.getId()));
 
+        claims.put("id", user.getId());
         claims.put("name", user.getName());
 
         Date now = new Date();
@@ -54,8 +54,8 @@ public class JwtProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        String userId = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
+        Long userId = Long.parseLong(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject());
+        UserDetails userDetails = customUserDetailsService.loadUserById(userId);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -72,9 +72,14 @@ public class JwtProvider {
     }
 
     public String createAccessToken(Authentication authentication) {
-        String name = authentication.getName();
-        Claims claims = Jwts.claims().setSubject(name);
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
 
+        Long id = principal.getUser().getId();
+        String name = principal.getUser().getName();
+
+        Claims claims = Jwts.claims().setSubject(String.valueOf(id));
+
+        claims.put("id", id);
         claims.put("name", name);
 
         Date now = new Date();
@@ -102,9 +107,11 @@ public class JwtProvider {
     private String getToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
-        for(Cookie cookie : cookies) {
-            if("access_token".equals(cookie.getName())) {
-                return cookie.getValue();
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                if("access_token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
             }
         }
 

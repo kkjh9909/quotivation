@@ -80,6 +80,10 @@ public class QuoteController {
         List<RelatedQuote> relatedQuotes = quoteService.getRelatedQuotes(quoteId);
 
         model.addAttribute("quote", quoteDetail);
+        model.addAttribute("likeCount", quoteDetail.getLikeCount());
+        model.addAttribute("dislikeCount", quoteDetail.getDislikeCount());
+        model.addAttribute("isLike", quoteDetail.getIsLike());
+        model.addAttribute("isDislike", quoteDetail.getIsDislike());
         model.addAttribute("relatedQuotes", relatedQuotes);
 
         return "quote-detail-page";

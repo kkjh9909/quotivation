@@ -1,7 +1,6 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.user.request.UserSignUpReq;
-import com.example.quotivation.dto.user.response.UserLoginReq;
 import com.example.quotivation.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,11 +17,6 @@ public class UserController {
     public String getLoginPage() {
         return "login-page";
     }
-
-//    @PostMapping("/login")
-//    public String login(UserLoginReq request) {
-//        userService.login(request);
-//    }
 
     @GetMapping("/signup")
     public String getSignUpPage() {

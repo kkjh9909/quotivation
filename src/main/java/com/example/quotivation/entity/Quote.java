@@ -24,6 +24,10 @@ public class Quote extends Timestamp {
 
     private String content;
 
+    private int likeCount;
+
+    private int dislikeCount;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -41,6 +45,23 @@ public class Quote extends Timestamp {
                 .category(category)
                 .author(author)
                 .content(content)
+                .likeCount(0)
                 .build();
+    }
+
+    public void increaseLike() {
+        this.likeCount++;
+    }
+
+    public void decreaseLike() {
+        this.likeCount--;
+    }
+
+    public void increaseDislike() {
+        this.dislikeCount++;
+    }
+
+    public void decreaseDislike() {
+        this.dislikeCount--;
     }
 }

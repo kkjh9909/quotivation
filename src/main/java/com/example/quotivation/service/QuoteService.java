@@ -2,12 +2,9 @@ package com.example.quotivation.service;
 
 import com.example.quotivation.dto.quote.request.AddQuoteRequest;
 import com.example.quotivation.dto.quote.response.*;
-import com.example.quotivation.entity.Author;
-import com.example.quotivation.entity.Category;
-import com.example.quotivation.entity.Quote;
-import com.example.quotivation.repository.AuthorRepository;
-import com.example.quotivation.repository.CategoryRepository;
-import com.example.quotivation.repository.QuoteRepository;
+import com.example.quotivation.entity.*;
+import com.example.quotivation.repository.*;
+import com.example.quotivation.security.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,9 +22,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuoteService {
 
+    private final UserRepository userRepository;
     private final QuoteRepository quoteRepository;
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
+    private final QuoteLikeRepository quoteLikeRepository;
+    private final AuthenticationService authenticationService;
+    private final QuoteDislikeRepository quoteDislikeRepository;
 
     public TodayQuote getTodayQuote() {
         long count = quoteRepository.count();
@@ -88,9 +89,18 @@ public class QuoteService {
     }
 
     public QuoteDetail getQuoteDetail(Long quoteId) {
+        long userId = authenticationService.getUserId();
+
         Optional<Quote> quote = quoteRepository.findById(quoteId);
-        
-        return QuoteDetail.make(quote.get());
+        Optional<User> user = userRepository.findById(userId);
+
+        Optional<QuoteDislike> dislike = quoteDislikeRepository.findByQuoteIdAndUserId(quoteId, userId);
+        Optional<QuoteLike> like = quoteLikeRepository.findByQuoteIdAndUserId(quoteId, userId);
+
+        boolean isLike = like.isPresent();
+        boolean isDislike = dislike.isPresent();
+
+        return QuoteDetail.make(quote.get(), isLike, isDislike);
     }
 
     public List<RelatedQuote> getRelatedQuotes(Long quoteId) {

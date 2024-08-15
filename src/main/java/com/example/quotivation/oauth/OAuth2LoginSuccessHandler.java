@@ -1,5 +1,6 @@
 package com.example.quotivation.oauth;
 
+import com.example.quotivation.security.JwtProvider;
 import com.example.quotivation.security.PrincipalDetails;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

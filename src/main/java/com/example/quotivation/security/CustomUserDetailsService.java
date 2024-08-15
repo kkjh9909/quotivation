@@ -29,4 +29,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new PrincipalDetails(validUser);
     }
+
+    public UserDetails loadUserById(Long userId)
+            throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
+        }
+
+        User validUser = user.get();
+
+        return new PrincipalDetails(validUser);
+    }
 }
