@@ -25,7 +25,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String token = jwtProvider.createAccessToken(principalDetails.getUser());
 
         Cookie authCookie = new Cookie("access_token", token);
-        authCookie.setHttpOnly(true);
+//        authCookie.setHttpOnly(true);
 //        authCookie.setSecure(true);  // https 설정시
         authCookie.setPath("/");
         authCookie.setMaxAge(7 * 24 * 60 * 60);

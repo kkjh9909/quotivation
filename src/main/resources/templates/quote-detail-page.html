@@ -11,7 +11,7 @@
     <title th:text="${quote.content}">Document</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" th:inline="javascript">
-		function clickLikeButton() {
+        function clickLikeButton() {
 			const likeIcon = document.querySelector('#likeButton i.material-icons').textContent.trim();
 
 			if (likeIcon === "thumb_up") {
@@ -43,14 +43,26 @@
 				},
 				body: JSON.stringify({}),
 			})
-				.then(response => response.text())
-				.then(html => {
-					const likeButtonElement = document.querySelector('#likeButton');
-					likeButtonElement.outerHTML = html;
-				})
-				.catch(error => {
+            .then(response => {
+				if(response.status === 401) {
+					const result = window.confirm("로그인이 필요합니다.\n로그인 하시겠습니까?");
+
+					if(result)
+						location.href='/login'
+                    else
+						return Promise.reject('로그인 취소');
+                }
+				return response.text()
+			})
+            .then(html => {
+                const likeButtonElement = document.querySelector('#likeButton');
+                likeButtonElement.outerHTML = html;
+            })
+            .catch(error => {
+				if (error !== '로그인 취소') {
 					console.error('Error:', error);
-				});
+				}
+            });
         }
 
 		function unlikeQuote() {
@@ -63,13 +75,25 @@
 				},
 				body: JSON.stringify({}),
 			})
-				.then(response => response.text())
+				.then(response => {
+					if(response.status === 401) {
+						const result = window.confirm("로그인이 필요합니다.\n로그인 하시겠습니까?");
+
+						if(result)
+							location.href='/login'
+						else
+							return Promise.reject('로그인 취소');
+					}
+					return response.text()
+				})
 				.then(html => {
 					const likeButtonElement = document.querySelector('#likeButton');
 					likeButtonElement.outerHTML = html;
 				})
 				.catch(error => {
-					console.error('Error:', error);
+					if (error !== '로그인 취소') {
+						console.error('Error:', error);
+					}
 				});
 		}
 
@@ -83,13 +107,25 @@
 				},
 				body: JSON.stringify({}),
 			})
-				.then(response => response.text())
+				.then(response => {
+					if(response.status === 401) {
+						const result = window.confirm("로그인이 필요합니다.\n로그인 하시겠습니까?");
+
+						if(result)
+							location.href='/login'
+						else
+							return Promise.reject('로그인 취소');
+					}
+					return response.text()
+				})
 				.then(html => {
 					const likeButtonElement = document.querySelector('#dislikeButton');
 					likeButtonElement.outerHTML = html;
 				})
 				.catch(error => {
-					console.error('Error:', error);
+					if (error !== '로그인 취소') {
+						console.error('Error:', error);
+					}
 				});
 		}
 
@@ -103,13 +139,25 @@
 				},
 				body: JSON.stringify({}),
 			})
-				.then(response => response.text())
+				.then(response => {
+					if(response.status === 401) {
+						const result = window.confirm("로그인이 필요합니다.\n로그인 하시겠습니까?");
+
+						if(result)
+							location.href='/login'
+						else
+							return Promise.reject('로그인 취소');
+					}
+					return response.text()
+				})
 				.then(html => {
 					const likeButtonElement = document.querySelector('#dislikeButton');
 					likeButtonElement.outerHTML = html;
 				})
 				.catch(error => {
-					console.error('Error:', error);
+					if (error !== '로그인 취소') {
+						console.error('Error:', error);
+					}
 				});
 		}
     </script>
