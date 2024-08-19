@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/user/**").authenticated()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().permitAll()
                 )
                 .exceptionHandling(exceptionHandling ->

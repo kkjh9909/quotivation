@@ -30,7 +30,7 @@ public class QuoteController {
     private final CategoryService categoryService;
     private final QuoteService quoteService;
 
-    @GetMapping("/add-quote")
+    @GetMapping("/admin/add-quote")
     public String addQuotePage(Model model) {
         List<AuthorInfo> authors = authorService.getAuthorsForAddQuote();
         List<CategoryInfo> categories = categoryService.getCategoriesForAddQuote();
@@ -41,7 +41,7 @@ public class QuoteController {
         return "add-quote-page";
     }
 
-    @PostMapping("/add-quote")
+    @PostMapping("/admin/add-quote")
     public String addQuote(@RequestBody AddQuoteRequest quoteRequest) {
         quoteService.addQuote(quoteRequest);
 
