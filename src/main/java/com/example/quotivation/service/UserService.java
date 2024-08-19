@@ -21,6 +21,11 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public void signup(UserSignUpReq request) {
+        Optional<User> getEmail = userRepository.findByEmail(request.getEmail());
+        if(getEmail.isPresent()) {
+            throw new IllegalArgumentException("이미 가입한 이메일 입니다.");
+        }
+
         if (!request.getPassword().equals(request.getPasswordConfirm())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
