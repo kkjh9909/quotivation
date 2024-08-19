@@ -28,10 +28,6 @@ public class Quote extends Timestamp {
 
     private int dislikeCount;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     @ManyToOne
     private Category category;
 
