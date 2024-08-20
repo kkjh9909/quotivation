@@ -1,12 +1,16 @@
 package com.example.quotivation.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @SequenceGenerator(
         name = "author_sequence",
         sequenceName = "author_id_sequence",
@@ -24,11 +28,17 @@ public class Author extends Timestamp {
 
     private int quoteCount;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    public Author() {}
 
     public void increaseQuoteCount() {
         this.quoteCount++;
+    }
+
+    public static Author make(String name, String imageUrl) {
+        return Author.builder()
+                .name(name)
+                .photo(imageUrl)
+                .quoteCount(0)
+                .build();
     }
 }

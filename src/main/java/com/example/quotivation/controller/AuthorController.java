@@ -1,5 +1,7 @@
 package com.example.quotivation.controller;
 
+import com.example.quotivation.dto.author.request.AddAuthorRequest;
+import com.example.quotivation.dto.author.request.TestDto;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.service.AuthorService;
@@ -9,9 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,6 +23,20 @@ public class AuthorController {
 
     private final AuthorService authorService;
     private final QuoteService quoteService;
+
+    @GetMapping("/admin/add-author")
+    public String getAddAuthorPage() {
+        return "add-author-page";
+    }
+
+    @PostMapping("/admin/add-author")
+    public String addAuthor(@RequestPart("image") MultipartFile image,
+                            @RequestParam("saveName") String saveName,
+                            @RequestParam("name") String name) throws IOException {
+        authorService.addAuthor(name, image, saveName);
+
+        return "add-author-page";
+    }
 
     @GetMapping("/authors")
     public String getAuthorPage(Model model,
