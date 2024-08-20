@@ -1,12 +1,17 @@
 package com.example.quotivation.entity;
 
+import com.example.quotivation.dto.category.request.AddCategoryRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @SequenceGenerator(
         name = "category_sequence",
         sequenceName = "category_id_sequence",
@@ -22,11 +27,18 @@ public class Category extends Timestamp {
 
     private int quoteCount;
 
-    private LocalDateTime createdAt;
+    public Category() {
 
-    private LocalDateTime updatedAt;
+    }
 
     public void increaseQuoteCount() {
         this.quoteCount++;
+    }
+
+    public static Category make(AddCategoryRequest request) {
+        return Category.builder()
+                .name(request.getCategory())
+                .quoteCount(0)
+                .build();
     }
 }

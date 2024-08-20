@@ -1,5 +1,6 @@
 package com.example.quotivation.controller;
 
+import com.example.quotivation.dto.category.request.AddCategoryRequest;
 import com.example.quotivation.dto.category.response.CategoryListInfo;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.service.CategoryService;
@@ -10,9 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +19,18 @@ public class CategoryController {
 
     private final CategoryService categoryService;
     private final QuoteService quoteService;
+
+    @GetMapping("/admin/add-category")
+    public String getAddCategoryPage() {
+        return "add-category-page";
+    }
+
+    @PostMapping("/admin/add-category")
+    public String addCategory(@RequestBody AddCategoryRequest request) {
+        categoryService.addCategory(request);
+
+        return "add-category-page";
+    }
 
     @GetMapping("/categories")
     public String getCategoriesPage(Model model,

@@ -1,5 +1,6 @@
 package com.example.quotivation.service;
 
+import com.example.quotivation.dto.category.request.AddCategoryRequest;
 import com.example.quotivation.dto.category.response.CategoryInfo;
 import com.example.quotivation.dto.category.response.CategoryListInfo;
 import com.example.quotivation.entity.Category;
@@ -47,5 +48,15 @@ public class CategoryService {
         List<Category> categories = categoryRepository.findAll();
 
         return categories.stream().map(CategoryInfo::make).collect(Collectors.toList());
+    }
+
+    public void addCategory(AddCategoryRequest request) {
+        Optional<Category> getCategory = categoryRepository.findByName(request.getCategory());
+        if(getCategory.isPresent())
+            throw new IllegalArgumentException("이미 존재하는 카테고리입니다.");
+
+        Category category = Category.make(request);
+
+        categoryRepository.save(category);
     }
 }
