@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signUp(UserSignUpReq userSignUpReq) {
+    public String signUp(@RequestBody UserSignUpReq userSignUpReq) {
         userService.signup(userSignUpReq);
 
         return "redirect:/login";

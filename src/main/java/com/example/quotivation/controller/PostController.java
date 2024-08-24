@@ -40,7 +40,7 @@ public class PostController {
         return "posts-page";
     }
 
-    @GetMapping("/post/write")
+    @GetMapping("/user/post/write")
     public String getPostWritePage(Model model) {
         return "post-write-page";
     }

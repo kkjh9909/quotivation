@@ -10,10 +10,11 @@
   <link th:href="@{/css/main.css}" rel="stylesheet" />
   <title>회원가입</title>
   <script>
-    document.getElementById('signupForm').addEventListener('submit', function (e) {
+    function signUp() {
+      const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('passwordConfirm').value;
+      const passwordConfirm = document.getElementById('passwordConfirm').value;
 
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailPattern.test(email)) {
@@ -22,17 +23,57 @@
         document.getElementById('email').setCustomValidity('');
       }
 
-      if (password !== confirmPassword) {
+      if (password !== passwordConfirm) {
         document.getElementById('passwordConfirm').setCustomValidity('비밀번호가 일치하지 않습니다.');
       } else {
         document.getElementById('passwordConfirm').setCustomValidity('');
       }
 
-      if (!this.checkValidity()) {
-        e.preventDefault();
-        this.reportValidity();
+      const data = {
+        name,
+        email,
+        password,
+        passwordConfirm,
+      };
+
+      fetch('/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).then(response => {
+        if (response.headers.get('Content-Type').includes('application/json')) {
+          return response.json().then(body => ({ status: response.status, body }));
+        } else {
+          return response.text().then(text => ({ status: response.status, body: { message: text } }));
+        }
+      })
+              .then(result => {
+                if (result.status === 200) {
+                  alert("회원가입이 완료되었습니다.");
+                  window.location.href = '/login';
+                } else if (result.status === 409) {
+                  displayError(result.body.message || "이미 가입된 이메일입니다.");
+                } else {
+                  displayError(result.body.message || "오류가 발생했습니다.");
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                displayError("서버와의 통신 중 오류가 발생했습니다.");
+              });
+    }
+
+    function displayError(message) {
+      const errorElement = document.getElementById('formError');
+      if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      } else {
+        alert(message);
       }
-    });
+    }
   </script>
 </head>
 <body>
@@ -41,7 +82,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h2 class="text-center mb-4">회원가입</h2>
-      <form id="signupForm" th:action="@{/signup}" method="post" novalidate>
+      <div>
         <div class="mb-3">
           <label for="name" class="form-label">이름</label>
           <input type="text" class="form-control" id="name" name="name" required>
@@ -58,8 +99,9 @@
           <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
           <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-      </form>
+        <div id="formError" class="text-danger" style="display:none;"></div>
+        <button type="submit" class="btn btn-primary w-100" onclick="signUp()">Sign Up</button>
+      </div>
     </div>
   </div>
 </div>

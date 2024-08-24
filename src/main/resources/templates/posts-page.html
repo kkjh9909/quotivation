@@ -14,6 +14,30 @@
             cursor: pointer;
         }
     </style>
+    <script>
+		function getWritePage() {
+			fetch('/user/post/write', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+				.then(response => {
+					if (response.status === 401) {
+						if (confirm('로그인이 필요합니다. 회원가입 페이지로 이동하시겠습니까?')) {
+							window.location.href = '/signup';
+						}
+					} else if (response.ok) {
+						window.location.href = '/user/post/write';
+					} else {
+						alert('요청을 처리하는 중 오류가 발생했습니다.');
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+    </script>
     <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
 </head>
 <body>
@@ -71,7 +95,7 @@
 
 
     <div class="text-end">
-        <button class="btn btn-lg btn-primary" th:onclick="|window.location='/post/write'|">
+        <button class="btn btn-lg btn-primary" onclick="getWritePage()">
             글쓰기
         </button>
     </div>
