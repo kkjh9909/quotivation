@@ -1,7 +1,6 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.author.request.AddAuthorRequest;
-import com.example.quotivation.dto.author.request.TestDto;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.service.AuthorService;
