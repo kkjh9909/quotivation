@@ -100,7 +100,17 @@
           <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required>
         </div>
         <div id="formError" class="text-danger" style="display:none;"></div>
-        <button type="submit" class="btn btn-primary w-100" onclick="signUp()">Sign Up</button>
+        <button type="submit" class="btn btn-primary w-100" onclick="signUp()">회원가입</button>
+        <div class="text-center login-btn mt-4">
+          <a href="/oauth2/authorization/google" class="btn p-0 w-100">
+            <img src="/image/google.png" alt="Google Login">
+          </a>
+        </div>
+        <div class="text-center login-btn">
+          <a href="/oauth2/authorization/naver" class="btn p-0 w-100">
+            <img src="/image/naver.png" alt="Naver Login">
+          </a>
+        </div>
       </div>
     </div>
   </div>
