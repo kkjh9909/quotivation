@@ -46,14 +46,14 @@
         <tbody>
         <th:block th:each="author : ${authors}">
             <tr>
-                <th th:onclick="'location.href=\'' + @{'/author/' + ${author.id}} + '\';'" class="link-primary">
+                <th th:onclick="'location.href=\'' + @{'/author/' + ${author.id}} + '\';'">
                     <div class="row">
                         <div class="col-auto">
                             <span th:text="${author.name}"></span>
                             <span th:text="'(' + ${author.count} + ')'"></span>
                         </div>
                         <div class="col text-end">
-                            <button class="btn btn-primary">바로가기</button>
+                            <button class="btn btn-outline-primary">바로가기</button>
                         </div>
                     </div>
                 </th>

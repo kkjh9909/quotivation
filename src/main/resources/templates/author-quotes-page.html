@@ -42,7 +42,7 @@
         <tbody>
         <th:block th:each="quote : ${quotes}">
             <tr>
-                <td th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'" class="link-primary">
+                <th th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'">
                     <a th:href="@{'/quote/' + ${quote.id}}" class="card-body">
                         <div>
                             <p th:text="${quote.content}"></p>
@@ -51,7 +51,7 @@
                             <span th:text="'-' + ${quote.author} + '-'"></span>
                         </div>
                     </a>
-                </td>
+                </th>
             </tr>
         </th:block>
         </tbody>
@@ -68,7 +68,6 @@
                     Previous
                 </a>
             </li>
-
             <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalPages))}"
                 th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
                 <a th:class="page-link"

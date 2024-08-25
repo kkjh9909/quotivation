@@ -20,7 +20,7 @@
     </div>
     <div class="container mt-5">
         <div class="row">
-            <div th:each="quote: ${quotes}" class="card">
+            <div th:each="quote: ${quotes}" class="card mt-2">
                 <a th:href="@{'/quote/' + ${quote.id}}" class="card-body">
                     <span th:text="${quote.content}"></span>
                     <div th:class="text-end">
@@ -45,12 +45,12 @@
             <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalPages))}"
                 th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
                 <a th:class="page-link" th:text="${page}"
-                   th:href="@{'/category/' + ${category.id} + '?page=' + ${page}}">
+                   th:href="@{'/category/' + ${categoryId} + '?page=' + ${page}}">
                 </a>
             </li>
             <li th:if="${currentPage < totalPages}" th:class="page-item">
                 <a th:class="page-link"
-                   th:href="@{'/category/' + ${category.id} + '?page=' + ${currentPage + 1}}">
+                   th:href="@{'/category/' + ${categoryId} + '?page=' + ${currentPage + 1}}">
                     Next
                 </a>
             </li>

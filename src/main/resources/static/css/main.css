@@ -1,0 +1,113 @@
+a {
+    text-decoration: none;
+}
+
+.simply-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:nowrap;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+}
+
+.content-area {
+    min-height: 300px;
+}
+
+td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:nowrap;
+    max-width: 150px;
+}
+
+.header {
+    background-color: #2F417F !important;
+    color: #FFFFFF;
+}
+
+.footer {
+    margin-top: 50px;
+    padding: 20px 8px 50px;
+    background-color: #2F417F !important;
+    color: #FFFFFF;
+}
+
+.bg-search {
+    background-image: url("../image/lake.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 35vh; /* 화면의 전체 높이를 차지하도록 설정 */
+    display: flex; /* Flexbox 활성화 */
+    justify-content: center; /* 가로 정렬: 가운데 */
+    align-items: center; /* 세로 정렬: 가운데 */
+    text-align: center;
+    padding: 0; /* 패딩을 0으로 설정하여 입력창이 정확히 가운데 오도록 함 */
+}
+
+.search-wrapper {
+    position: relative;
+    width: 80%; /* 부모 요소의 너비의 80%를 차지하게 설정 */
+    max-width: 600px; /* 최대 너비 제한 (선택 사항) */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.search-input {
+    width: 100%; /* 부모 요소(.search-wrapper)의 너비에 맞춤 */
+    padding: 12px 50px 12px 16px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    height: 50px;
+    outline: none;
+}
+
+
+.search-button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: url('../image/rens.png') no-repeat center white;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+th.div:hover {
+    cursor: pointer;
+}
+
+/* main.css 파일에 추가 */
+a {
+    color: black;
+    text-decoration: none; /* 밑줄 제거 (원하는 경우) */
+}
+
+a:hover {
+    color: black; /* 마우스 오버 시에도 검정색 유지 */
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 (원하는 경우) */
+}
+
+th {
+    color: black;
+    text-decoration: none; /* 밑줄 제거 (원하는 경우) */
+}
+
+th:hover {
+    cursor: pointer;
+    color: black; /* 마우스 오버 시에도 검정색 유지 */
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 (원하는 경우) */
+}

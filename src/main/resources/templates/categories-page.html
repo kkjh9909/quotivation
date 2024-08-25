@@ -48,14 +48,14 @@
         <tbody>
         <th:block th:each="category : ${categories}">
             <tr>
-                <th th:onclick="'location.href=\'' + @{'/category/' + ${category.id}} + '\';'" class="link-primary">
+                <th th:onclick="'location.href=\'' + @{'/category/' + ${category.id}} + '\';'">
                     <div class="row">
                         <div class="col-auto">
                             <span th:text="${category.name}"></span>
                             <span th:text="'(' + ${category.count} + ')'"></span>
                         </div>
                         <div class="col text-end">
-                            <button class="btn btn-primary">바로가기</button>
+                            <button class="btn btn-outline-primary">바로가기</button>
                         </div>
                     </div>
                 </th>
