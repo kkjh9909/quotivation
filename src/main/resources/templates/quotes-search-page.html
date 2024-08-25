@@ -69,7 +69,7 @@
         <tbody>
         <th:block th:each="quote : ${quotes}">
             <tr>
-                <th th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'" class="link-primary">
+                <th th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'" class="link-dark">
                     <div class="row">
                         <div class="simply-text">
                             <span th:text="${quote.content}"></span>

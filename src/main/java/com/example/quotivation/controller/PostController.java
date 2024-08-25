@@ -1,6 +1,6 @@
 package com.example.quotivation.controller;
 
-import com.example.quotivation.dto.post.request.PostWriteReq;
+import com.example.quotivation.dto.post.request.PostWriteRequest;
 import com.example.quotivation.dto.post.response.PostDetailRes;
 import com.example.quotivation.dto.post.response.PostsSummaryRes;
 import com.example.quotivation.dto.post.response.RecentPostsRes;
@@ -45,12 +45,10 @@ public class PostController {
         return "post-write-page";
     }
 
-    @PostMapping("/post/write")
+    @PostMapping("/user/post/write")
     @ResponseStatus(value = HttpStatus.OK)
-    public void writePost(@RequestBody PostWriteReq postWriteReq, HttpServletRequest request) {
-        String ipAddress = getIpAddress(request);
-
-        postService.writePost(postWriteReq, ipAddress);
+    public void writePost(@RequestBody PostWriteRequest request) {
+        postService.writePost(request);
     }
 
     @GetMapping("/post/{postId}")
@@ -63,18 +61,5 @@ public class PostController {
         model.addAttribute("recentPosts", recentPosts);
 
         return "post-detail-page";
-    }
-
-    private String getIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip != null && !ip.isEmpty())
-            return ip.split(",")[0];
-
-        ip = request.getHeader("X-Real-IP");
-        if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
-            return ip;
-        }
-
-        return request.getRemoteAddr();
     }
 }

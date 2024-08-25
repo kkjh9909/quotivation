@@ -1,6 +1,6 @@
 package com.example.quotivation.entity;
 
-import com.example.quotivation.dto.post.request.PostWriteReq;
+import com.example.quotivation.dto.post.request.PostWriteRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,20 +25,14 @@ public class Post extends Timestamp {
 
     private String content;
 
-    private String writer;
-
-    private String address;
-
     private int hits;
 
     public Post() {}
 
-    public static Post create(PostWriteReq request, String ip) {
+    public static Post create(PostWriteRequest request) {
         return Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
-                .writer(request.getWriter())
-                .address(ip)
                 .hits(0)
                 .build();
     }

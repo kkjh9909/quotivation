@@ -16,39 +16,8 @@
 		}
 
 		function submitPost() {
-			const writer = document.getElementById("writer").value;
-			const password = document.getElementById("password").value;
 			const title = document.getElementById("title").value;
 			const content = document.getElementById("content").value;
-
-			if(writer.length === 0) {
-				$.bootstrapGrowl("작성자 이름은 공백일 수 없습니다.", {
-					type: "danger",
-					offset: {from: "bottom", amount: 20},
-					align: "right",
-					width: 400,
-					delay: 3000,
-					timer: 3000,
-					allow_dismiss: true,
-					stackup_spacing: 10
-				})
-
-				return false
-			}
-			if(password.length < 4) {
-				$.bootstrapGrowl("비밀번호를 최소 4자리 이상 설정해주세요.", {
-					type: "danger",
-					offset: {from: "bottom", amount: 20},
-					align: "right",
-					width: 400,
-					delay: 3000,
-					timer: 3000,
-					allow_dismiss: true,
-					stackup_spacing: 10
-				})
-
-				return false
-			}
 
 			if(title.length < 1) {
 				$.bootstrapGrowl("제목을 최소 한 글자 이상 작성해주세요.", {
@@ -82,12 +51,10 @@
 
 			const data = {
 				title,
-				content,
-				writer,
-				password
+				content
 			};
 
-			fetch('/post/write', {
+			fetch('/user/post/write', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -111,14 +78,6 @@
         <h3>문의하기</h3>
     </div>
     <div class="border border-dark p-5">
-        <div class="row">
-            <div class="col-3">
-                <input type="text" class="form-control" placeholder="작성자" id="writer" name="writer">
-            </div>
-            <div class="col-3">
-                <input type="text" class="form-control" placeholder="비밀번호" id="password" name="password">
-            </div>
-        </div>
         <div class="mt-2">
             <input type="text" class="form-control" placeholder="제목" id="title" name="title">
         </div>
