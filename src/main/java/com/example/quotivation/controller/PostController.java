@@ -1,9 +1,9 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.post.request.PostWriteRequest;
-import com.example.quotivation.dto.post.response.PostDetailRes;
+import com.example.quotivation.dto.post.response.PostDetailResponse;
 import com.example.quotivation.dto.post.response.PostsSummaryRes;
-import com.example.quotivation.dto.post.response.RecentPostsRes;
+import com.example.quotivation.dto.post.response.RecentPostsResponse;
 import com.example.quotivation.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +54,8 @@ public class PostController {
     @GetMapping("/post/{postId}")
     public String getPostDetailPage(Model model,
                                     @PathVariable Long postId) {
-        PostDetailRes response = postService.getPostDetail(postId);
-        List<RecentPostsRes> recentPosts = postService.getRecentPosts(postId);
+        PostDetailResponse response = postService.getPostDetail(postId);
+        List<RecentPostsResponse> recentPosts = postService.getRecentPosts(postId);
 
         model.addAttribute("postDetails", response);
         model.addAttribute("recentPosts", recentPosts);

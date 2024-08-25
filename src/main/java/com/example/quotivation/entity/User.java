@@ -28,6 +28,8 @@ public class User extends Timestamp {
 
     private String picture;
 
+    
+
     public User() {}
 
     @Builder

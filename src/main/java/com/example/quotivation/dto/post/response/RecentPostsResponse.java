@@ -10,21 +10,19 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-public class RecentPostsRes {
+public class RecentPostsResponse {
 
     private Long id;
     private String title;
     private String writer;
-    private String address;
     private int hits;
     private LocalDateTime createdAt;
 
-    public static RecentPostsRes make(Post post) {
-        return RecentPostsRes.builder()
+    public static RecentPostsResponse make(Post post) {
+        return RecentPostsResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
-                .writer(post.getWriter())
-                .address(post.getAddress())
+                .writer(post.getUser().getName())
                 .hits(post.getHits())
                 .createdAt(post.getCreatedAt())
                 .build();

@@ -27,12 +27,16 @@ public class Post extends Timestamp {
 
     private int hits;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     public Post() {}
 
-    public static Post create(PostWriteRequest request) {
+    public static Post create(PostWriteRequest request, User user) {
         return Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
+                .user(user)
                 .hits(0)
                 .build();
     }

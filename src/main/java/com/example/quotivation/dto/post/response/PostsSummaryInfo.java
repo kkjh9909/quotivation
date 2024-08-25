@@ -17,16 +17,14 @@ public class PostsSummaryInfo {
     private String title;
     private String writer;
     private int hits;
-    private String address;
     private LocalDateTime createdAt;
 
     public static PostsSummaryInfo make(Post post) {
         return PostsSummaryInfo.builder()
                 .id(post.getId())
+                .writer(post.getUser().getName())
                 .title(post.getTitle())
-                .writer(post.getWriter())
                 .hits(post.getHits())
-                .address(post.getAddress())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

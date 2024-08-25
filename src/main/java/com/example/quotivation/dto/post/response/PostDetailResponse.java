@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
-public class PostDetailRes {
+public class PostDetailResponse {
 
     private Long id;
     private String title;
@@ -20,13 +20,12 @@ public class PostDetailRes {
     private int hits;
     private LocalDateTime createdAt;
 
-    public static PostDetailRes make(Post post) {
-        return PostDetailRes.builder()
+    public static PostDetailResponse make(Post post) {
+        return PostDetailResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .writer(post.getWriter())
-                .address(post.getAddress())
+                .writer(post.getUser().getName())
                 .hits(post.getHits())
                 .createdAt(post.getCreatedAt())
                 .build();
