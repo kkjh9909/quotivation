@@ -33,6 +33,10 @@ public class QuoteService {
     public TodayQuote getTodayQuote() {
         long count = quoteRepository.count();
         Random random = new Random();
+
+        if(count == 0)
+            return null;
+
         int i = random.nextInt((int)count);
 
         Quote quote = quoteRepository.findAll(PageRequest.of(i, 1)).getContent().get(0);
@@ -108,7 +112,7 @@ public class QuoteService {
 
         Category category = quote.get().getCategory();
 
-        return quoteRepository.findTop10ByCategoryOrderByUpdatedAtDesc(category).stream()
+        return quoteRepository.findTop10ByCategoryOrderByUpdatedAtDesc(category, PageRequest.of(0, 10)).stream()
                 .filter(q -> q.getId() != quoteId)
                 .map(RelatedQuote::make)
                 .collect(Collectors.toList());

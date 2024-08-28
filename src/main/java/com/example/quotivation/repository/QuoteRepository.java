@@ -4,9 +4,9 @@ import com.example.quotivation.entity.Author;
 import com.example.quotivation.entity.Category;
 import com.example.quotivation.entity.Quote;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -19,5 +19,6 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     Page<Quote> findByContentContaining(String query, Pageable pageable);
 
-    List<Quote> findTop10ByCategoryOrderByUpdatedAtDesc(Category category);
+    @Query("select q from Quote q join fetch q.author where q.category = :category order by q.updatedAt desc")
+    List<Quote> findTop10ByCategoryOrderByUpdatedAtDesc(Category category, Pageable pageable);
 }
