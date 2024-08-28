@@ -7,10 +7,12 @@ import com.example.quotivation.dto.quote.response.TodayQuote;
 import com.example.quotivation.service.AuthorService;
 import com.example.quotivation.service.CategoryService;
 import com.example.quotivation.service.QuoteService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -35,5 +37,17 @@ public class HomeController {
         model.addAttribute("latestQuotes", latestQuotes);
 
         return "index";
+    }
+
+    @GetMapping("/about/me")
+    public String getAboutMePage(Model model, HttpServletRequest request) {
+        model.addAttribute("url", request.getRequestURI());
+        return "/about/about-me-page";
+    }
+
+    @GetMapping("/about/contact")
+    public String getAboutContactPage(Model model, HttpServletRequest request) {
+        model.addAttribute("url", request.getRequestURI());
+        return "/about/about-contact-page";
     }
 }

@@ -119,3 +119,31 @@ th:hover {
     display: block;
     margin: 0 auto;
 }
+
+.about-list {
+    padding: 0;
+    list-style-type: none;
+}
+.about-list-item {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+.about-list-item.active {
+    background-color: #343a40;
+    color: white;
+}
+.about-list-item:hover {
+    background-color: #e9ecef;
+}
+
+@media (max-width: 576px) {
+    .about {
+        order: -1; /* 가장 위로 이동 */
+        width: 100%;
+    }
+}
