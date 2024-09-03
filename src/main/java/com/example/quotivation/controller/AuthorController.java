@@ -1,6 +1,7 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.author.request.AddAuthorRequest;
+import com.example.quotivation.dto.author.response.AuthorDescriptionResponse;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.service.AuthorService;
@@ -31,8 +32,9 @@ public class AuthorController {
     @PostMapping("/admin/add-author")
     public String addAuthor(@RequestPart("image") MultipartFile image,
                             @RequestParam("saveName") String saveName,
-                            @RequestParam("name") String name) throws IOException {
-        authorService.addAuthor(name, image, saveName);
+                            @RequestParam("name") String name,
+                            @RequestParam("description") String description) throws IOException {
+        authorService.addAuthor(name, image, saveName, description);
 
         return "add-author-page";
     }
@@ -59,7 +61,7 @@ public class AuthorController {
                                       @PageableDefault(size = 10) Pageable pageable,
                                       @PathVariable Long authorId) {
         QuoteListInfo response = quoteService.getQuotesByAuthor(authorId, pageable);
-        String author = authorService.getAuthorName(authorId);
+        AuthorDescriptionResponse author = authorService.getAuthorNameAndDescription(authorId);
 
         if(response.getTotalPages() < pageable.getPageNumber())
             return String.format("redirect:/author/%d?page=%d", authorId, response.getTotalPages());
@@ -69,7 +71,8 @@ public class AuthorController {
         model.addAttribute("totalPages", response.getTotalPages());
         model.addAttribute("count", response.getCount());
         model.addAttribute("authorId", authorId);
-        model.addAttribute("author", author);
+        model.addAttribute("authorName", author.getName());
+        model.addAttribute("authorDescription", author.getDescription());
 
         return "author-quotes-page";
     }

@@ -26,6 +26,8 @@ public class Author extends Timestamp {
 
     private String photo;
 
+    private String description;
+
     private int quoteCount;
 
     public Author() {}
@@ -34,9 +36,10 @@ public class Author extends Timestamp {
         this.quoteCount++;
     }
 
-    public static Author make(String name, String imageUrl) {
+    public static Author make(String name, String description, String imageUrl) {
         return Author.builder()
                 .name(name)
+                .description(description)
                 .photo(imageUrl)
                 .quoteCount(0)
                 .build();

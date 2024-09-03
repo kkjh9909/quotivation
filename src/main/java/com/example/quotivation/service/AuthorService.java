@@ -1,6 +1,7 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.author.request.AddAuthorRequest;
+import com.example.quotivation.dto.author.response.AuthorDescriptionResponse;
 import com.example.quotivation.dto.author.response.AuthorInfo;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.entity.Author;
@@ -44,10 +45,10 @@ public class AuthorService {
                 authors.getTotalPages());
     }
 
-    public String getAuthorName(Long authorId) {
+    public AuthorDescriptionResponse getAuthorNameAndDescription(Long authorId) {
         Optional<Author> author = authorRepository.findById(authorId);
 
-        return author.get().getName();
+        return AuthorDescriptionResponse.make(author.get());
     }
 
     public List<AuthorInfo> getAuthorsForAddQuote() {
@@ -57,11 +58,11 @@ public class AuthorService {
     }
 
     @Transactional
-    public void addAuthor(String name, MultipartFile image, String saveName) throws IOException {
+    public void addAuthor(String name, MultipartFile image, String saveName, String description) throws IOException {
         imageUploadService.uploadImage(image, saveName);
         String imageUrl = imageUploadService.getImageUrl();
 
-        Author author = Author.make(name, imageUrl);
+        Author author = Author.make(name, description, imageUrl);
 
         authorRepository.save(author);
     }

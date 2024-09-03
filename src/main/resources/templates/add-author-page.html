@@ -12,6 +12,7 @@
         function submitAuthor() {
 			const name = document.querySelector('input[name="name"]').value;
 			const saveName = document.querySelector('input[name="saveName"]').value;
+			const description = document.querySelector('input[name="description"]').value;
             const image = document.querySelector('input[type="file"]').files[0];
 
 			const formData = new FormData();
@@ -19,6 +20,7 @@
             formData.append('image', image);
 			formData.append('name', name);
 			formData.append('saveName', saveName);
+			formData.append('description', description);
 
 			fetch('/admin/add-author', {
 				method: 'POST',
@@ -48,6 +50,7 @@
     <div class="mt-5">
         <input type="file" name="image" class="form-control mt-2">
         <input name="name" class="form-control me-2" type="search" placeholder="저자 입력" aria-label="Search">
+        <input name="description" class="form-control me-2" type="search" placeholder="저자 설명 입력" aria-label="Search">
         <input name="saveName" class="form-control me-2" type="search" placeholder="저장될 사진 이름 입력" aria-label="Search">
         <button class="btn btn-outline-success" type="button" onclick="submitAuthor()">
             submit
