@@ -14,7 +14,7 @@
 			const categoryId = document.querySelector('select[name="category"]').value;
 			const authorId = document.querySelector('select[name="author"]:nth-of-type(2)').value;
 
-			const content = document.querySelector('input[type="search"]').value;
+			const content = document.querySelector('textarea[name="content"]').value;
 
 			const data = {
 				categoryId,
@@ -59,7 +59,7 @@
         <select name="author">
             <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
         </select>
-        <input name="content" class="form-control me-2" type="search" placeholder="명언 입력" aria-label="Search">
+        <textarea name="content" class="form-control me-2" placeholder="명언 입력" aria-label="Search"></textarea>
         <button class="btn btn-outline-success" type="submit" onclick="submitQuote()">
             추가하기
         </button>
