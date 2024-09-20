@@ -42,12 +42,12 @@ public class HomeController {
     @GetMapping("/about/me")
     public String getAboutMePage(Model model, HttpServletRequest request) {
         model.addAttribute("url", request.getRequestURI());
-        return "/about/about-me-page";
+        return "about/about-me-page";
     }
 
     @GetMapping("/about/contact")
     public String getAboutContactPage(Model model, HttpServletRequest request) {
         model.addAttribute("url", request.getRequestURI());
-        return "/about/about-contact-page";
+        return "about/about-contact-page";
     }
 }
