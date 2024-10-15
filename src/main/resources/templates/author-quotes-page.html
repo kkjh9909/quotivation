@@ -66,7 +66,7 @@
             <li th:if="${currentPage > 1}" th:class="page-item">
                 <a th:class="page-link"
                    th:href="@{'/author/' + ${authorId} + '?page=' + ${currentPage - 1}}">
-                    Previous
+                    <
                 </a>
             </li>
             <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalPages))}"
@@ -79,7 +79,7 @@
             <li th:if="${currentPage < totalPages}" th:class="page-item">
                 <a th:class="page-link"
                    th:href="@{'/author/' + ${authorId} + '?page=' + ${currentPage + 1}}">
-                    Next
+                    >
                 </a>
             </li>
         </ul>

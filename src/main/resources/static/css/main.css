@@ -155,3 +155,43 @@ th:hover {
 .quote-content {
     white-space: pre-line;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #343a40;
+    color: white;
+    border: 1px solid #343a40;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: #495057;
+    color: white;
+}
+
+.page-item.active .page-link {
+    background-color: #495057;
+    border-color: #495057;
+    cursor: pointer;
+}
+
+.page-item.disabled .page-link {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    cursor: pointer;
+    pointer-events: none;
+}

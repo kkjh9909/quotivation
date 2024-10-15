@@ -176,7 +176,7 @@
                 <li th:if="${currentPage > 1}" th:class="page-item">
                     <a th:class="page-link"
                        th:href="@{/search(query=${query}, type=${type}, page=${currentPage - 1})}">
-                        Previous
+                        <
                     </a>
                 </li>
                 <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalQuotesPages))}"
@@ -188,7 +188,7 @@
                 <li th:if="${currentPage < quotes.totalCount / 10}" th:class="page-item">
                     <a th:class="page-link"
                        th:href="@{/search(query=${query}, type=${type}, page=${currentPage + 1})}">
-                        Next
+                        >
                     </a>
                 </li>
             </ul>
@@ -200,7 +200,7 @@
                 <li th:if="${currentPage > 1}" th:class="page-item">
                     <a th:class="page-link"
                        th:href="@{/search(query=${query},type=${type}, page=${currentPage - 1})}">
-                        Previous
+                        <
                     </a>
                 </li>
                 <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalAuthorsPages))}"
@@ -212,7 +212,7 @@
                 <li th:if="${currentPage < authors.totalCount / 10}" th:class="page-item">
                     <a th:class="page-link"
                        th:href="@{/search(query=${query}, type=${type}, page=${currentPage + 1})}">
-                        Next
+                        >
                     </a>
                 </li>
             </ul>

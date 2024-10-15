@@ -72,7 +72,7 @@
             <li th:if="${currentPage > 1}" th:class="page-item">
                 <a th:class="page-link"
                    th:href="@{/categories(page=${currentPage - 1}, order=${sort})}">
-                    Previous
+                    <
                 </a>
             </li>
 
@@ -86,7 +86,7 @@
             <li th:if="${currentPage < totalPages}" th:class="page-item">
                 <a th:class="page-link"
                    th:href="@{/categories(page=${currentPage + 1}, order=${sort})}">
-                    Next
+                    >
                 </a>
             </li>
         </ul>
