@@ -1,9 +1,7 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.author.request.AddAuthorRequest;
-import com.example.quotivation.dto.author.response.AuthorDescriptionResponse;
-import com.example.quotivation.dto.author.response.AuthorInfo;
-import com.example.quotivation.dto.author.response.AuthorListInfo;
+import com.example.quotivation.dto.author.response.*;
 import com.example.quotivation.entity.Author;
 import com.example.quotivation.entity.Quote;
 import com.example.quotivation.repository.AuthorRepository;
@@ -65,5 +63,21 @@ public class AuthorService {
         Author author = Author.make(name, description, imageUrl);
 
         authorRepository.save(author);
+    }
+
+    public SearchAuthorListResponse searchAuthorsPreview(String query) {
+        List<Author> authors = authorRepository.findByNameContainingOrderByCreatedAtDesc(query, PageRequest.of(0, 5));
+        Long totalCount = authorRepository.countByNameContaining(query);
+
+        return new SearchAuthorListResponse(authors.stream().map(SearchAuthorResponse::make).collect(Collectors.toList()),
+                authors.size(), totalCount);
+    }
+
+    public SearchAuthorListResponse searchAuthorsByPage(String query, Pageable pageable) {
+        List<Author> authors = authorRepository.findByNameContainingOrderByCreatedAtDesc(query, pageable);
+        Long totalCount = authorRepository.countByNameContaining(query);
+
+        return new SearchAuthorListResponse(authors.stream().map(SearchAuthorResponse::make).collect(Collectors.toList()),
+                authors.size(), totalCount);
     }
 }

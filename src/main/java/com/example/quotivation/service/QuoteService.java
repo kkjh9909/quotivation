@@ -117,4 +117,20 @@ public class QuoteService {
                 .map(RelatedQuote::make)
                 .collect(Collectors.toList());
     }
+
+    public SearchQuoteListResponse searchQuotesPreview(String query) {
+        List<Quote> quotes = quoteRepository.findByContentContainingOrderByCreatedAtDesc(query, PageRequest.of(0, 5));
+        Long totalCount = quoteRepository.countByContentContaining(query);
+
+        return new SearchQuoteListResponse(quotes.stream().map(SearchQuoteResponse::make).collect(Collectors.toList()),
+                quotes.size(), totalCount);
+    }
+
+    public SearchQuoteListResponse searchQuotesByPage(String query, Pageable pageable) {
+        List<Quote> quotes = quoteRepository.findByContentContainingOrderByCreatedAtDesc(query, pageable);
+        Long totalCount = quoteRepository.countByContentContaining(query);
+
+        return new SearchQuoteListResponse(quotes.stream().map(SearchQuoteResponse::make).collect(Collectors.toList()),
+                quotes.size(), totalCount);
+    }
 }

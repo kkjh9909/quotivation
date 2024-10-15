@@ -10,16 +10,7 @@
     <link th:href="@{/css/main.css}" rel="stylesheet" />
     <title th:text="${query}">Document</title>
     <script type="text/javascript" th:inline="javascript">
-		function sortCategory() {
-			const option = document.querySelector('select[name="sort"]').value;
-
-			if(option === "popular")
-				window.location="/authors?order=" + 'popular'
-			else
-				window.location="/authors?order=" + 'alpha'
-		}
-
-		function searchQuote() {
+        function searchQuote() {
 			const word = document.getElementById("word").value;
 
 			if(word.length < 2)
@@ -32,88 +23,201 @@
 			if (event.key === 'Enter')
 				searchQuote();
 		}
-    </script>
 
+		function searchSentence() {
+			const params = new URLSearchParams(window.location.search);
+            const word = params.get("query")
+
+			location.href = "/search?query=" + word + "&type=" + "sentence";
+        }
+
+		function searchAuthor() {
+			const params = new URLSearchParams(window.location.search);
+			const word = params.get("query")
+
+			location.href = "/search?query=" + word + "&type=" + "author";
+		}
+
+		function searchAll() {
+			const params = new URLSearchParams(window.location.search);
+			const word = params.get("query")
+
+			location.href = "/search?query=" + word + "&type=" + "all";
+		}
+    </script>
+    <style>
+        .list-box {
+            padding: 20px 50px;
+        }
+        .list-box.active {
+            background-color: #343a40;
+            color: white;
+        }
+        .list-box:hover {
+            background-color: #e9ecef;
+            cursor: pointer;
+        }
+        .list-box.active:hover {
+            background-color: #343a40;
+            cursor: pointer;
+        }
+        .hr-with-text {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .hr-with-text hr {
+            flex-grow: 1; /* 선이 좌우로 늘어남 */
+            border: none;
+            border-top: 2px solid #ccc;
+            margin: 0 10px;
+        }
+
+        .hr-with-text span {
+            padding: 0 10px;
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
     <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
-    <div class="row mt-2">
-        <div class="col">
-            <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" id="word" onkeypress="handleKeyPress(event)">
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-outline-success" th:onclick="searchQuote()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </button>
+    <div class="bg-search">
+        <div class="search-wrapper">
+            <input type="text" class="search-input" placeholder="검색할 단어를 입력하세요." id="word" onkeypress="handleKeyPress(event)">
+            <button class="search-button" type="button" onclick="searchQuote()"></button>
         </div>
     </div>
-    <hr>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>
-                <div class="row">
-                    <div class="col-auto">
-                        <span th:text="${query}"></span>
-                        에 대한 검색 결과
-                        <span th:text="'(' + ${count} + ')'"></span>
+    <div class="container mt-3">
+        <div class="container">
+            <h2><span th:text="${query}"></span> 검색 결과</h2>
+            <ul class="d-flex flex-row w-100 mt-4 p-0">
+                <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('all')} ? 'active' : ''" onclick="searchAll()">전체 결과</li>
+                <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('sentence')} ? 'active' : ''" onclick="searchSentence()">문장 검색</li>
+                <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('author')} ? 'active' : ''" onclick="searchAuthor()">저자 검색</li>
+            </ul>
+        </div>
+        <!--   문장 검색     -->
+        <div th:if="${quotes != null}">
+            <div class="hr-with-text">
+                <hr>
+                <span>문장 검색<span th:if="${quotes.totalCount != null}" th:text="'(' + ${quotes.totalCount} + ')'"></span></span>
+                <hr>
+            </div>
+            <div th:if="${#lists.isEmpty(quotes.quotes)}" class="p-3">
+                <div class="text-center">
+                    <span class="text-muted">등록된 데이터가 없습니다</span>
+                </div>
+                <hr>
+            </div>
+            <th:block th:if="${!#lists.isEmpty(quotes.quotes)}" th:each="quote : ${quotes.quotes}">
+                <div class="table-light">
+                    <div class="link-dark p-3" style="cursor: pointer;">
+                        <div class="row">
+                            <!-- 문장 부분 -->
+                            <div class="col-12 mb-2" th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'" >
+                                <span class="fs-5 fw-normal" th:text="${quote.content}"></span> <!-- 글씨 크기 및 굵기 조절 -->
+                            </div>
+                            <!-- 저자 부분 -->
+                            <div class="col-12 text-end"  th:onclick="'window.location.href=\'/author/' + ${quote.authorId} + '\';'">
+                                <span class="text-muted fst-italic" th:text="'- ' + ${quote.author} + ' -'"></span> <!-- 이탤릭체 및 글씨 색 조절 -->
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <th:block th:each="quote : ${quotes}">
-            <tr>
-                <th th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'" class="link-dark">
-                    <div class="row">
-                        <div class="simply-text">
-                            <span th:text="${quote.content}"></span>
-                        </div>
-                        <div class="text-end">
-                            <span th:text="'-' + ${quote.author} + '-'"></span>
+                <hr>
+            </th:block>
+            <div th:if="${type eq 'all' && quotes.totalCount > 5}" class="w-100 text-end">
+                <a th:href="@{/search(query=${query}, type='sentence')}" th:text="'검색 결과 더보기'">검색 결과 더보기</a>
+            </div>
+        </div>
+        <!--  저자 검색      -->
+        <div th:if="${authors != null}">
+            <div class="hr-with-text">
+                <hr>
+                <span>저자 검색<span th:if="${authors.totalCount != null}" th:text="'(' + ${authors.totalCount} + ')'"></span></span>
+                <hr>
+            </div>
+            <div th:if="${#lists.isEmpty(authors.authors)}" class="p-3">
+                <div class="text-center">
+                    <span class="text-muted">등록된 데이터가 없습니다</span>
+                </div>
+                <hr>
+            </div>
+            <th:block th:if="${!#lists.isEmpty(authors.authors)}" th:each="author : ${authors.authors}">
+                <div class="table-light">
+                    <div th:onclick="'location.href=\'' + @{'/author/' + ${author.id}} + '\';'" class="link-dark p-3" style="cursor: pointer;">
+                        <div class="row">
+                            <!-- 저자 이름 -->
+                            <div class="col-12 mb-2">
+                                <span class="fs-5 fw-normal" th:text="${author.name}"></span> <!-- 글씨 크기 및 굵기 조절 -->
+                            </div>
+                            <!-- 저자 설명 -->
+                            <div class="col-12 text-end">
+                                <span class="text-muted fst-italic" th:text="'- ' + ${author.description} + ' -'"></span> <!-- 이탤릭체 및 글씨 색 조절 -->
+                            </div>
                         </div>
                     </div>
-                </th>
-            </tr>
-        </th:block>
-        </tbody>
-    </table>
-    <div class="text-center" th:if="${totalPages < 1}">
-        <img src="/image/empty.PNG" alt="이미지" class="img-fluid">
-        <h3>검색 결과가 없어요~~</h3>
-    </div>
-    <nav aria-label="Page navigation example" th:if="${totalPages > 0}">
-        <ul class="pagination justify-content-center">
-            <!-- 이전 버튼 -->
-            <li th:if="${currentPage > 1}" th:class="page-item">
-                <a th:class="page-link"
-                   th:href="@{/search(page=${currentPage - 1}, query=${query})}">
-                    Previous
-                </a>
-            </li>
-            <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalPages))}"
-                th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
-                <a th:class="page-link" th:text="${page}"
-                   th:href="@{/search(page=${page}, query=${query})}"
-                ></a>
-            </li>
-            <li th:if="${currentPage < totalPages}" th:class="page-item">
-                <a th:class="page-link"
-                   th:href="@{/search(page=${currentPage + 1}, query=${query})}">
-                    Next
-                </a>
-            </li>
-        </ul>
-    </nav>
+                </div>
+                <hr>
+            </th:block>
+            <div th:if="${type eq 'all' && authors.totalCount > 5}" class="w-100 text-end">
+                <a th:href="@{/search(query=${query}, type='author')}" th:text="'검색 결과 더보기'">검색 결과 더보기</a>
+            </div>
+        </div>
 
-</div>
-<script th:inline="javascript">
-</script>
+        <!--quotes 페이지-->
+        <nav aria-label="Page navigation example" th:if="${type ne 'all' && quotes != null && quotes.totalCount > 0}">
+            <ul class="pagination justify-content-center">
+                <!-- 이전 버튼 -->
+                <li th:if="${currentPage > 1}" th:class="page-item">
+                    <a th:class="page-link"
+                       th:href="@{/search(query=${query}, type=${type}, page=${currentPage - 1})}">
+                        Previous
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalQuotesPages))}"
+                    th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
+                    <a th:class="page-link" th:text="${page}"
+                       th:href="@{/search(query=${query}, type=${type}, page=${page}, )}"
+                    ></a>
+                </li>
+                <li th:if="${currentPage < quotes.totalCount / 10}" th:class="page-item">
+                    <a th:class="page-link"
+                       th:href="@{/search(query=${query}, type=${type}, page=${currentPage + 1})}">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!--authors 페이지-->
+        <nav aria-label="Page navigation example" th:if="${type ne 'all' && authors != null && authors.totalCount > 0}">
+            <ul class="pagination justify-content-center">
+                <!-- 이전 버튼 -->
+                <li th:if="${currentPage > 1}" th:class="page-item">
+                    <a th:class="page-link"
+                       th:href="@{/search(query=${query},type=${type}, page=${currentPage - 1})}">
+                        Previous
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence((currentPage - 1)/5 * 5 + 1, T(java.lang.Math).min((currentPage - 1)/5 * 5 + 5, totalAuthorsPages))}"
+                    th:class="${page == currentPage} ? 'page-item active' : 'page-item'">
+                    <a th:class="page-link" th:text="${page}"
+                       th:href="@{/search(query=${query}, type=${type}, page=${page})}"
+                    ></a>
+                </li>
+                <li th:if="${currentPage < authors.totalCount / 10}" th:class="page-item">
+                    <a th:class="page-link"
+                       th:href="@{/search(query=${query}, type=${type}, page=${currentPage + 1})}">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </body>
 <div th:insert="~{fragments/footer :: footer}"></div>
 </html>

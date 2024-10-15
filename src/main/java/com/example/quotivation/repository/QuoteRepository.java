@@ -21,4 +21,8 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     @Query("select q from Quote q join fetch q.author where q.category = :category order by q.updatedAt desc")
     List<Quote> findTop10ByCategoryOrderByUpdatedAtDesc(Category category, Pageable pageable);
+
+    List<Quote> findByContentContainingOrderByCreatedAtDesc(String query, Pageable pageable);
+
+    Long countByContentContaining(String query);
 }

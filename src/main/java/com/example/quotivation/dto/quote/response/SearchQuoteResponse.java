@@ -8,15 +8,15 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class QuoteList {
+public class SearchQuoteResponse {
 
     private Long id;
     private String content;
     private String author;
     private Long authorId;
 
-    public static QuoteList make(Quote quote) {
-        return QuoteList.builder()
+    public static SearchQuoteResponse make(Quote quote) {
+        return SearchQuoteResponse.builder()
                 .id(quote.getId())
                 .content(quote.getContent())
                 .author(quote.getAuthor().getName())
