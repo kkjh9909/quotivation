@@ -1,4 +1,4 @@
-package com.example.quotivation.service.search;
+package com.example.quotivation.service.strategy.search;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.search.response.SearchResultResponse;
-import com.example.quotivation.service.search.SearchStrategy;
-import com.example.quotivation.service.search.SearchStrategyFactory;
+import com.example.quotivation.service.strategy.search.SearchStrategy;
+import com.example.quotivation.service.strategy.search.SearchStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

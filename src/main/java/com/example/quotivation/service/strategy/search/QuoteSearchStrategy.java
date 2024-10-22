@@ -1,4 +1,4 @@
-package com.example.quotivation.service.search;
+package com.example.quotivation.service.strategy.search;
 
 import com.example.quotivation.dto.quote.response.SearchQuoteListResponse;
 import com.example.quotivation.dto.search.response.SearchResultResponse;
