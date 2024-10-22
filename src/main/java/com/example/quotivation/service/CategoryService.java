@@ -5,6 +5,7 @@ import com.example.quotivation.dto.category.response.CategoryInfo;
 import com.example.quotivation.dto.category.response.CategoryListInfo;
 import com.example.quotivation.entity.Category;
 import com.example.quotivation.repository.CategoryRepository;
+import com.example.quotivation.service.sort.category.CategorySortStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategorySortStrategyFactory categorySortStrategyFactory;
 
     public List<CategoryInfo> getCategories() {
         List<Category> categories = categoryRepository.findAll(PageRequest.of(0, 10)).getContent();
@@ -28,14 +30,7 @@ public class CategoryService {
     }
 
     public CategoryListInfo getAllCategories(Pageable pageable, String order) {
-        Page<Category> categories;
-        if(order.equals("popular"))
-            categories = categoryRepository.findAllByOrderByQuoteCountDesc(pageable);
-        else
-            categories = categoryRepository.findAllByOrderByName(pageable);
-
-        return new CategoryListInfo(categories.getContent().stream().map(CategoryInfo::make).collect(Collectors.toList()),
-                categories.getTotalPages());
+        return categorySortStrategyFactory.getStrategy(order).sort(pageable);
     }
 
     public String getCategoryName(Long categoryId) {
