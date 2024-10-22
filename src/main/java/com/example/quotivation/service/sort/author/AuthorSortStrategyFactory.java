@@ -12,6 +12,6 @@ public class AuthorSortStrategyFactory {
     private final Map<String, AuthorSortStrategy> strategies;
 
     public AuthorSortStrategy getStrategy(String order) {
-        return strategies.getOrDefault(order.toLowerCase(), strategies.get("name"));
+        return strategies.getOrDefault("author_" + order.toLowerCase(), strategies.get("author_name"));
     }
 }

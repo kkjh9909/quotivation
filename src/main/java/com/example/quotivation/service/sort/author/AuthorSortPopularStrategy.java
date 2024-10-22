@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-@Service("popular")
+@Service("author_popular")
 @RequiredArgsConstructor
 public class AuthorSortPopularStrategy implements AuthorSortStrategy {
 

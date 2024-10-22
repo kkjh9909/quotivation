@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
 
-@Service("name")
+@Service("author_name")
 @RequiredArgsConstructor
 public class AuthorSortNameStrategy implements AuthorSortStrategy {
 
