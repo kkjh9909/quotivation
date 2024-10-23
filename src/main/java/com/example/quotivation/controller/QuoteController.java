@@ -32,14 +32,14 @@ public class QuoteController {
         model.addAttribute("authors", authors);
         model.addAttribute("categories", categories);
 
-        return "add-quote-page";
+        return "admin/add-quote-page";
     }
 
     @PostMapping("/admin/add-quote")
     public String addQuote(@RequestBody AddQuoteRequest quoteRequest) {
         quoteService.addQuote(quoteRequest);
 
-        return "add-quote-page";
+        return "admin/add-quote-page";
     }
 
 
@@ -57,6 +57,6 @@ public class QuoteController {
         model.addAttribute("isDislike", quoteDetail.getIsDislike());
         model.addAttribute("relatedQuotes", relatedQuotes);
 
-        return "quote-detail-page";
+        return "quote/quote-detail-page";
     }
 }

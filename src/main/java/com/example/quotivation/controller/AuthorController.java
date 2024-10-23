@@ -1,6 +1,5 @@
 package com.example.quotivation.controller;
 
-import com.example.quotivation.dto.author.request.AddAuthorRequest;
 import com.example.quotivation.dto.author.response.AuthorDescriptionResponse;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class AuthorController {
 
     @GetMapping("/admin/add-author")
     public String getAddAuthorPage() {
-        return "add-author-page";
+        return "admin/add-author-page";
     }
 
     @PostMapping("/admin/add-author")
@@ -36,7 +34,7 @@ public class AuthorController {
                             @RequestParam("description") String description) throws IOException {
         authorService.addAuthor(name, image, saveName, description);
 
-        return "add-author-page";
+        return "admin/add-author-page";
     }
 
     @GetMapping("/authors")
@@ -53,7 +51,7 @@ public class AuthorController {
         model.addAttribute("currentPage", pageable.getPageNumber() + 1);
         model.addAttribute("sort", order);
 
-        return "authors-page";
+        return "author/authors-page";
     }
 
     @GetMapping("/author/{authorId}")
@@ -74,6 +72,6 @@ public class AuthorController {
         model.addAttribute("authorName", author.getName());
         model.addAttribute("authorDescription", author.getDescription());
 
-        return "author-quotes-page";
+        return "author/author-quotes-page";
     }
 }

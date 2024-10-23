@@ -24,7 +24,7 @@ public class QuoteLikeController {
         model.addAttribute("likeCount", likeCount);
         model.addAttribute("isLike", isLike);
 
-        return "quote-detail-page :: #likeButton";
+        return "quote/quote-detail-page :: #likeButton";
     }
 
     @DeleteMapping("/user/quote/like/{quoteId}")
@@ -35,6 +35,6 @@ public class QuoteLikeController {
         model.addAttribute("likeCount", likeCount);
         model.addAttribute("isLike", isLike);
 
-        return "quote-detail-page :: #likeButton";
+        return "quote/quote-detail-page :: #likeButton";
     }
 }

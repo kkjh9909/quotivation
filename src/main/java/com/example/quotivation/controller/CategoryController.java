@@ -29,7 +29,7 @@ public class CategoryController {
     public String addCategory(@RequestBody AddCategoryRequest request) {
         categoryService.addCategory(request);
 
-        return "add-category-page";
+        return "admin/add-category-page";
     }
 
     @GetMapping("/categories")
@@ -46,7 +46,7 @@ public class CategoryController {
         model.addAttribute("currentPage", pageable.getPageNumber() + 1);
         model.addAttribute("sort", order);
 
-        return "categories-page";
+        return "category/categories-page";
     }
 
     @GetMapping("/category/{categoryId}")

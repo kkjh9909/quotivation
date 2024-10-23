@@ -5,7 +5,6 @@ import com.example.quotivation.dto.post.response.PostDetailResponse;
 import com.example.quotivation.dto.post.response.PostsSummaryRes;
 import com.example.quotivation.dto.post.response.RecentPostsResponse;
 import com.example.quotivation.service.PostService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,12 +36,12 @@ public class PostController {
         model.addAttribute("totalPages", response.getTotalPages());
         model.addAttribute("currentPage", pageable.getPageNumber() + 1);
 
-        return "posts-page";
+        return "post/posts-page";
     }
 
     @GetMapping("/user/post/write")
     public String getPostWritePage(Model model) {
-        return "post-write-page";
+        return "post/post-write-page";
     }
 
     @PostMapping("/user/post/write")
@@ -60,6 +59,6 @@ public class PostController {
         model.addAttribute("postDetails", response);
         model.addAttribute("recentPosts", recentPosts);
 
-        return "post-detail-page";
+        return "post/post-detail-page";
     }
 }

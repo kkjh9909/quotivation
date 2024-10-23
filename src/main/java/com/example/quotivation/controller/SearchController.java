@@ -40,6 +40,6 @@ public class SearchController {
         model.addAttribute("type", type);
         model.addAttribute("currentPage", pageable.getPageNumber() + 1);
 
-        return "quotes-search-page";
+        return "quote/quotes-search-page";
     }
 }

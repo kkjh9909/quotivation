@@ -16,12 +16,12 @@ public class UserController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login-page";
+        return "user/login-page";
     }
 
     @GetMapping("/signup")
     public String getSignUpPage() {
-        return "sign-up-page";
+        return "user/sign-up-page";
     }
 
     @PostMapping("/signup")

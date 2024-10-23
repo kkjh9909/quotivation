@@ -22,7 +22,7 @@ public class QuoteDislikeController {
         model.addAttribute("dislikeCount", likeCount);
         model.addAttribute("isDislike", isLike);
 
-        return "quote-detail-page :: #dislikeButton";
+        return "quote/quote-detail-page :: #dislikeButton";
     }
 
     @DeleteMapping("/user/quote/dislike/{quoteId}")
@@ -33,6 +33,6 @@ public class QuoteDislikeController {
         model.addAttribute("dislikeCount", likeCount);
         model.addAttribute("isDislike", isLike);
 
-        return "quote-detail-page :: #dislikeButton";
+        return "quote/quote-detail-page :: #dislikeButton";
     }
 }
