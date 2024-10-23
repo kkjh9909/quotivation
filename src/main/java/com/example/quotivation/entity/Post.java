@@ -13,7 +13,7 @@ import lombok.Getter;
 @SequenceGenerator(
         name = "post_sequence",
         sequenceName = "post_id_sequence",
-        initialValue = 10000000,
+        initialValue = 10_000_000,
         allocationSize = 1
 )
 public class Post extends Timestamp {

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @SequenceGenerator(
         name = "category_sequence",
         sequenceName = "category_id_sequence",
-        initialValue = 3000000,
+        initialValue = 3_000_000,
         allocationSize = 1
 )
 public class Category extends Timestamp {

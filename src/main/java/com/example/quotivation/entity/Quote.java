@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SequenceGenerator(
         name = "quote_sequence",
         sequenceName = "quote_id_sequence",
-        initialValue = 50000000,
+        initialValue = 50_000_000,
         allocationSize = 1
 )
 public class Quote extends Timestamp {

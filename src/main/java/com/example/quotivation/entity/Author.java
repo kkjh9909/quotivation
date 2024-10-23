@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SequenceGenerator(
         name = "author_sequence",
         sequenceName = "author_id_sequence",
-        initialValue = 2000000,
+        initialValue = 2_000_000,
         allocationSize = 1
 )
 public class Author extends Timestamp {
