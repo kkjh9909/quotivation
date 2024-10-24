@@ -28,6 +28,8 @@ public class Quote extends Timestamp {
 
     private int dislikeCount;
 
+    private int subscriptionCount;
+
     @ManyToOne
     private Category category;
 
@@ -59,5 +61,13 @@ public class Quote extends Timestamp {
 
     public void decreaseDislike() {
         this.dislikeCount--;
+    }
+
+    public void increaseSubscriptionCount() {
+        this.subscriptionCount++;
+    }
+
+    public void decreaseSubscriptionCount() {
+        this.subscriptionCount--;
     }
 }

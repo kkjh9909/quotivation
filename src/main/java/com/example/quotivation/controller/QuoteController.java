@@ -8,6 +8,7 @@ import com.example.quotivation.dto.quote.response.RelatedQuote;
 import com.example.quotivation.service.AuthorService;
 import com.example.quotivation.service.CategoryService;
 import com.example.quotivation.service.QuoteService;
+import com.example.quotivation.service.UserQuoteSubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuoteController {
 
+    private final QuoteService quoteService;
     private final AuthorService authorService;
     private final CategoryService categoryService;
-    private final QuoteService quoteService;
+    private final UserQuoteSubscriptionService userQuoteSubscriptionService;
 
 
     @GetMapping("/admin/add-quote")
@@ -49,6 +51,7 @@ public class QuoteController {
                                      @PathVariable Long quoteId) {
         QuoteDetail quoteDetail = quoteService.getQuoteDetail(quoteId);
         List<RelatedQuote> relatedQuotes = quoteService.getRelatedQuotes(quoteId);
+        Boolean isSubscribe = userQuoteSubscriptionService.isSubscribe(quoteId);
 
         model.addAttribute("quote", quoteDetail);
         model.addAttribute("likeCount", quoteDetail.getLikeCount());
@@ -56,6 +59,7 @@ public class QuoteController {
         model.addAttribute("isLike", quoteDetail.getIsLike());
         model.addAttribute("isDislike", quoteDetail.getIsDislike());
         model.addAttribute("relatedQuotes", relatedQuotes);
+        model.addAttribute("isSubscribe", isSubscribe);
 
         return "quote/quote-detail-page";
     }

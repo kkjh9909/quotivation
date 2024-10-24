@@ -160,6 +160,81 @@
 					}
 				});
 		}
+
+		function clickSubscriptionButton() {
+			const subscribeIcon = document.querySelector('#subscribeButton i.material-icons').textContent.trim();
+
+			if (subscribeIcon === "star") {
+				unsubscribeAuthor();
+			}
+			else {
+				subscribeAuthor();
+			}
+        }
+
+		function subscribeAuthor() {
+			const quoteId = window.location.pathname.split('/')[2];
+
+			fetch(`/user/quote/subscribe/${quoteId}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({}),
+			})
+				.then(response => {
+					if(response.status === 401) {
+						const result = window.confirm("로그인이 필요합니다.\n로그인 하시겠습니까?");
+
+						if(result)
+							location.href='/login'
+						else
+							return Promise.reject('로그인 취소');
+					}
+					return response.text()
+				})
+				.then(html => {
+					const likeButtonElement = document.querySelector('#subscribeButton');
+					likeButtonElement.outerHTML = html;
+				})
+				.catch(error => {
+					if (error !== '로그인 취소') {
+						console.error('Error:', error);
+					}
+				});
+		}
+
+		function unsubscribeAuthor() {
+			const quoteId = window.location.pathname.split('/')[2];
+
+			fetch(`/user/quote/subscribe/${quoteId}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({}),
+			})
+				.then(response => {
+					if(response.status === 401) {
+						const result = window.confirm("로그인이 필요합니다.\n로그인 하시겠습니까?");
+
+						if(result)
+							location.href='/login'
+						else
+							return Promise.reject('로그인 취소');
+					}
+					return response.text()
+				})
+				.then(html => {
+					const likeButtonElement = document.querySelector('#subscribeButton');
+					likeButtonElement.outerHTML = html;
+				})
+				.catch(error => {
+					if (error !== '로그인 취소') {
+						console.error('Error:', error);
+					}
+				});
+		}
     </script>
     <style>
         .col.position-relative {
@@ -214,6 +289,15 @@
                 </div>
             </div>
             <div class="col position-relative">
+                <div id="subscribeButton" class="text-end">
+                    <button class="btn" onclick="clickSubscriptionButton()">
+                        <i class="material-icons"
+                           th:switch="${isSubscribe}">
+                            <span th:case="true">star</span> <!-- 채워진 별 -->
+                            <span th:case="false">star_border</span>
+                        </i>
+                    </button>
+                </div>
                 <p th:text="${quote.content}" class="centered quote-content"></p>
                 <div class="bottom-right">
                     <div class="row">
