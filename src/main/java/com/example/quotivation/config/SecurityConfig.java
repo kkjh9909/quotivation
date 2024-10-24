@@ -79,7 +79,7 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID", "access_token")
                 )
-                .addFilterAfter(new LoginAuthenticationFilter(jwtProvider), ExceptionTranslationFilter.class)
+                .addFilterBefore(new LoginAuthenticationFilter(jwtProvider), ExceptionTranslationFilter.class)
         ;
 
         return http.build();

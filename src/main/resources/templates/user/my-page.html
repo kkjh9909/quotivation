@@ -46,6 +46,7 @@
             background-color: #E1E1E1;
             border-radius: 16px;
             text-align: center;
+            padding: 20px 5px 20px 5px;
         }
 
         .list-container {
@@ -92,6 +93,19 @@
             cursor: pointer;
         }
     </style>
+    <script>
+        function clickAuthor() {
+			location.href='/user/info?type=author&page=1'
+        }
+
+		function clickQuote() {
+			location.href='/user/info?type=quote&page=1'
+        }
+
+		function reviseInfo() {
+			console.log("revise info")
+        }
+    </script>
     <title>내 정보</title>
 
     <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
@@ -119,20 +133,22 @@
             <div class="col ms-3">
                 <div class="list-container">
                     <ul class="horizontal-list">
-                        <li onclick="clickAuthor()" th:classappend="${type.equals('all')} ? 'active' : ''">관심 저자</li>
-                        <li onclick="clickQuote()" th:classappend="${type.equals('all')} ? 'active' : ''">관심 명언</li>
+                        <li onclick="clickAuthor()" th:classappend="${type.equals('author')} ? 'active' : ''">관심 저자</li>
+                        <li onclick="clickQuote()" th:classappend="${type.equals('quote')} ? 'active' : ''">관심 명언</li>
                     </ul>
                 </div>
-                <div class="row">
-                    <div class="col-3 author-card">
-                        <div class="mt-2">
-                            <img  class="author-img" src="/image/empty.PNG" alt="author">
-                        </div>
-                        <div class="mt-3">
-                            이름
-                        </div>
-                        <div class="mt-2 mb-2">
-                            설명
+                <div class="row" th:if="${type == 'author'}">
+                    <div class="col-3" th:each="subscription: ${subscription.subscriptions}">
+                        <div class="author-card">
+                            <div class="mt-1">
+                                <img class="author-img mt-2" th:src="${subscription.picture}" alt="author">
+                            </div>
+                            <div class="mt-3">
+                                <span th:text="${subscription.name}">이름</span>
+                            </div>
+                            <div class="mt-2">
+                                <span th:text="${subscription.description}">설명</span>
+                            </div>
                         </div>
                     </div>
                 </div>

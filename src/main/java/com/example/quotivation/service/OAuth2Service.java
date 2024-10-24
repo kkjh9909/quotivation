@@ -26,10 +26,8 @@ public class OAuth2Service extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("start");
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("end");
 
         OAuth2UserInfo oauth2Userinfo = null;
         String provider = userRequest.getClientRegistration().getRegistrationId();

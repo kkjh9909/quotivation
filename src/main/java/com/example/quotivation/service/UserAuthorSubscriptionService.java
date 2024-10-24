@@ -17,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserAuthorSubscriptionService {
 
-    private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
     private final AuthenticationService authenticationService;
     private final UserAuthorSubscriptionRepository userAuthorSubscriptionRepository;
@@ -27,7 +26,7 @@ public class UserAuthorSubscriptionService {
 
         Author author = authorRepository.findById(authorId).get();
 
-        Optional<UserAuthorSubscription> isSubscribe = userAuthorSubscriptionRepository.findByUserIdAndAuthorId(user.getId(), author.getId());
+        Optional<UserAuthorSubscription> isSubscribe = userAuthorSubscriptionRepository.findByUserAndAuthor(user, author);
 
         return isSubscribe.isPresent();
     }
@@ -37,7 +36,7 @@ public class UserAuthorSubscriptionService {
 
         Author author = authorRepository.findById(authorId).get();
 
-        Optional<UserAuthorSubscription> isSubscribe = userAuthorSubscriptionRepository.findByUserIdAndAuthorId(user.getId(), author.getId());
+        Optional<UserAuthorSubscription> isSubscribe = userAuthorSubscriptionRepository.findByUserAndAuthor(user, author);
         if(isSubscribe.isEmpty()) {
             UserAuthorSubscription subscription = UserAuthorSubscription.make(user, author);
             subscription.subscribe();
@@ -50,7 +49,7 @@ public class UserAuthorSubscriptionService {
 
         Author author = authorRepository.findById(authorId).get();
 
-        Optional<UserAuthorSubscription> isSubscribe = userAuthorSubscriptionRepository.findByUserIdAndAuthorId(user.getId(), author.getId());
+        Optional<UserAuthorSubscription> isSubscribe = userAuthorSubscriptionRepository.findByUserAndAuthor(user, author);
         if(isSubscribe.isPresent()) {
             isSubscribe.get().unsubscribe();
             userAuthorSubscriptionRepository.delete(isSubscribe.get());

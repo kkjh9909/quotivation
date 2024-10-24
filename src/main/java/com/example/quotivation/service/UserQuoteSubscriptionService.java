@@ -22,7 +22,7 @@ public class UserQuoteSubscriptionService {
 
         Quote quote = quoteRepository.findById(quoteId).get();
 
-        Optional<UserQuoteSubscription> isSubscribe = userQuoteSubscriptionRepository.findByUserIdAndQuoteId(user.getId(), quote.getId());
+        Optional<UserQuoteSubscription> isSubscribe = userQuoteSubscriptionRepository.findByUserAndQuote(user, quote);
         if(isSubscribe.isEmpty()) {
             UserQuoteSubscription subscription = UserQuoteSubscription.make(user, quote);
             subscription.subscribe();
@@ -35,7 +35,7 @@ public class UserQuoteSubscriptionService {
 
         Quote quote = quoteRepository.findById(quoteId).get();
 
-        Optional<UserQuoteSubscription> isSubscribe = userQuoteSubscriptionRepository.findByUserIdAndQuoteId(user.getId(), quote.getId());
+        Optional<UserQuoteSubscription> isSubscribe = userQuoteSubscriptionRepository.findByUserAndQuote(user, quote);
         if(isSubscribe.isPresent()) {
             isSubscribe.get().unsubscribe();
             userQuoteSubscriptionRepository.delete(isSubscribe.get());
@@ -46,7 +46,7 @@ public class UserQuoteSubscriptionService {
         User user = authenticationService.getUser();
         Quote quote = quoteRepository.findById(quoteId).get();
 
-        Optional<UserQuoteSubscription> isSubscribe = userQuoteSubscriptionRepository.findByUserIdAndQuoteId(user.getId(), quote.getId());
+        Optional<UserQuoteSubscription> isSubscribe = userQuoteSubscriptionRepository.findByUserAndQuote(user, quote);
 
         return isSubscribe.isPresent();
     }
