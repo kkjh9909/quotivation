@@ -4,7 +4,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <div class="navbar-brand" onclick="location.href='/'" style="cursor:pointer">
-                <img src="/image/home1.PNG" alt="home" class="img-fluid">
+                <img src="/image/home.PNG" alt="home" class="img-fluid">
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,7 +32,8 @@
 
                 <th:block sec:authorize="isAuthenticated()">
                     <!-- 인증 받음 -->
-                    <a href="/logout" class="btn btn-danger">로그아웃</a>
+                    <a href="/user/info" class="btn btn-success">내 정보</a>
+                    <a href="/logout" class="btn btn-danger ms-2">로그아웃</a>
                 </th:block>
             </div>
         </div>

@@ -30,6 +30,8 @@ public class Author extends Timestamp {
 
     private int quoteCount;
 
+    private int subscriptionCount;
+
     public Author() {}
 
     public void increaseQuoteCount() {
@@ -43,5 +45,13 @@ public class Author extends Timestamp {
                 .photo(imageUrl)
                 .quoteCount(0)
                 .build();
+    }
+
+    public void increaseSubscriptionCount() {
+        this.subscriptionCount++;
+    }
+
+    public void decreaseSubscriptionCount() {
+        this.subscriptionCount--;
     }
 }

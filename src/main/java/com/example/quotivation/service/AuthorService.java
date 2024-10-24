@@ -71,4 +71,10 @@ public class AuthorService {
         return new SearchAuthorListResponse(authors.stream().map(SearchAuthorResponse::make).collect(Collectors.toList()),
                 authors.size(), totalCount);
     }
+
+    public AuthorDetailsResponse getAuthorDetails(Long authorId) {
+        Optional<Author> author = authorRepository.findById(authorId);
+
+        return AuthorDetailsResponse.make(author.get());
+    }
 }

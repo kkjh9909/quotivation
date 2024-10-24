@@ -1,10 +1,12 @@
 package com.example.quotivation.controller;
 
 import com.example.quotivation.dto.author.response.AuthorDescriptionResponse;
+import com.example.quotivation.dto.author.response.AuthorDetailsResponse;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.service.AuthorService;
 import com.example.quotivation.service.QuoteService;
+import com.example.quotivation.service.UserAuthorSubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,8 +21,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthorController {
 
-    private final AuthorService authorService;
     private final QuoteService quoteService;
+    private final AuthorService authorService;
+    private final UserAuthorSubscriptionService userAuthorSubscriptionService;
 
     @GetMapping("/admin/add-author")
     public String getAddAuthorPage() {
@@ -73,5 +76,17 @@ public class AuthorController {
         model.addAttribute("authorDescription", author.getDescription());
 
         return "author/author-quotes-page";
+    }
+
+    @GetMapping("/author/{authorId}/details")
+    public String getAuthorDetailsPage(@PathVariable Long authorId,
+                                       Model model) {
+        AuthorDetailsResponse authorDetails = authorService.getAuthorDetails(authorId);
+        Boolean isSubscribe = userAuthorSubscriptionService.isSubscribe(authorId);
+
+        model.addAttribute("details", authorDetails);
+        model.addAttribute("isSubscribe", isSubscribe);
+
+        return "author/author-detail-page";
     }
 }

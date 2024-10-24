@@ -1,10 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-growl/1.0.0/jquery.bootstrap-growl.min.js"></script>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <style>
+        .box {
+            width: 100%;
+            min-height: 30vh;
+        }
+        .profile-box {
+            border-radius: 16px;
+            background-color: #F6F6F6;
+        }
+        .email {
+            opacity: 0.6;
+        }
+
+        .profile-img-box {
+		    border-radius: 70%;
+            width: 150px;
+            height: 150px;
+        }
+        .revise-btn {
+            width: 100%;
+            border: #A1A1A1 solid 1px;
+            opacity: 0.8;
+            border-radius: 16px;
+            text-align: center;
+            background: #E1E1E1;
+            padding: 10px 40px 10px 40px;
+        }
+        .author-img {
+            width: 100px;
+            height: 100px;
+        }
+        .author-card {
+            margin: 20px;
+            background-color: #E1E1E1;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .list-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .horizontal-list {
+            list-style-type: none;
+            display: flex;
+            gap: 15px;
+            padding: 10px 30px 10px 30px;
+            margin: 0;
+        }
+
+        /* 각 항목 스타일 */
+        .horizontal-list li {
+            opacity: 0.7;
+            background-color: #F6F6F6;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            text-align: center;
+            min-width: 100px;
+            transition: background-color 0.3s ease;
+        }
+
+        .horizontal-list li.active {
+            background-color: #333;
+            color: white;
+        }
+
+        .horizontal-list li.active:hover {
+            background-color: #111;
+            color: white;
+        }
+
+        /* 항목 호버 효과 */
+        .horizontal-list li:hover {
+            background-color: #D1D1D1;
+            cursor: pointer;
+        }
+    </style>
+    <title>내 정보</title>
+
+    <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
 </head>
 <body>
+<div th:insert="~{fragments/header :: header}"></div>
+    <div class="container">
+        <div class="row mt-4 box">
+            <div class="col-auto text-center profile-box">
+                <div class="p-5">
+                    <div>
+                        <img src="/image/basic_profile.png" alt="image" class="profile-img-box">
+                    </div>
+                    <div class="mt-4">
+                        <p th:text="${info.getName()}">이름</p>
+                    </div>
+                    <div class="mt-2 email">
+                        <p th:text="${info.getEmail()}">이메일</p>
+                    </div>
+                    <button class="mt-2 revise-btn" onclick="reviseInfo()">
+                        개인 정보 수정
+                    </button>
+                </div>
+            </div>
+            <div class="col ms-3">
+                <div class="list-container">
+                    <ul class="horizontal-list">
+                        <li onclick="clickAuthor()" th:classappend="${type.equals('all')} ? 'active' : ''">관심 저자</li>
+                        <li onclick="clickQuote()" th:classappend="${type.equals('all')} ? 'active' : ''">관심 명언</li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-3 author-card">
+                        <div class="mt-2">
+                            <img  class="author-img" src="/image/empty.PNG" alt="author">
+                        </div>
+                        <div class="mt-3">
+                            이름
+                        </div>
+                        <div class="mt-2 mb-2">
+                            설명
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 
 </body>
+<div th:insert="~{fragments/footer :: footer}"></div>
 </html>
