@@ -77,4 +77,8 @@ public class AuthorService {
 
         return AuthorDetailsResponse.make(author.get());
     }
+
+    public long getAllCount() {
+        return authorRepository.count();
+    }
 }

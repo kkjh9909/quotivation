@@ -133,4 +133,8 @@ public class QuoteService {
         return new SearchQuoteListResponse(quotes.stream().map(SearchQuoteResponse::make).collect(Collectors.toList()),
                 quotes.size(), totalCount);
     }
+
+    public long getAllCount() {
+        return quoteRepository.count();
+    }
 }

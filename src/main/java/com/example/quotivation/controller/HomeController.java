@@ -31,6 +31,8 @@ public class HomeController {
         TodayQuote todayQuote = quoteService.getTodayQuote();
         List<LatestQuote> latestQuotes = quoteService.getLatestQuotes();
 
+
+
         model.addAttribute("authors", authors);
         model.addAttribute("categories", categories);
         model.addAttribute("todayQuote", todayQuote);
@@ -41,6 +43,11 @@ public class HomeController {
 
     @GetMapping("/about/me")
     public String getAboutMePage(Model model, HttpServletRequest request) {
+        Long quoteCount = quoteService.getAllCount();
+        Long authorCount = authorService.getAllCount();
+
+        model.addAttribute("quoteCount", quoteCount);
+        model.addAttribute("authorCount", authorCount);
         model.addAttribute("url", request.getRequestURI());
         return "about/about-me-page";
     }
