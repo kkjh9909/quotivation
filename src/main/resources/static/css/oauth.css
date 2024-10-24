@@ -1,0 +1,64 @@
+.login-btn img {
+    max-width: 150px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+.google-signin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 아이콘 스타일 */
+.google-signin-btn img {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+}
+
+/* 버튼에 마우스를 올렸을 때 색상 변화 */
+.google-signin-btn:hover {
+    background-color: #F5F5F5;
+}
+
+/* 버튼을 클릭할 때 효과 */
+.google-signin-btn:active {
+    background-color: #F5F5F5;
+}
+.naver-signin-btn {
+    background-color: #03C75A; /* Naver 초록색 */
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.naver-signin-btn img {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+}
+
+.naver-signin-btn:hover {
+    background-color: #029e48;
+}
