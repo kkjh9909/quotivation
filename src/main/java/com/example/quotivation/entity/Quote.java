@@ -11,15 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "quote_sequence",
-        sequenceName = "quote_id_sequence",
-        initialValue = 50_000_000,
-        allocationSize = 1
-)
 public class Quote extends Timestamp {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "quote_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String content;

@@ -7,15 +7,9 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@SequenceGenerator(
-        name = "user_sequence",
-        sequenceName = "user_id_sequence",
-        initialValue = 100_000_000,
-        allocationSize = 1
-)
 public class User extends Timestamp {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

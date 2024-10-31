@@ -11,15 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "author_sequence",
-        sequenceName = "author_id_sequence",
-        initialValue = 2_000_000,
-        allocationSize = 1
-)
 public class Author extends Timestamp {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "author_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

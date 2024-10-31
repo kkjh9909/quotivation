@@ -22,7 +22,7 @@ public class CategoryController {
 
     @GetMapping("/admin/add-category")
     public String getAddCategoryPage() {
-        return "add-category-page";
+        return "admin/add-category-page";
     }
 
     @PostMapping("/admin/add-category")

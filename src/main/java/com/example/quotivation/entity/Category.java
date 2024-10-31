@@ -12,15 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "category_sequence",
-        sequenceName = "category_id_sequence",
-        initialValue = 3_000_000,
-        allocationSize = 1
-)
 public class Category extends Timestamp {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "category_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

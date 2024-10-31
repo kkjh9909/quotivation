@@ -10,15 +10,9 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-@SequenceGenerator(
-        name = "post_sequence",
-        sequenceName = "post_id_sequence",
-        initialValue = 10_000_000,
-        allocationSize = 1
-)
 public class Post extends Timestamp {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "post_sequence")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
