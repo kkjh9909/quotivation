@@ -28,10 +28,12 @@ public class ImageUploadService {
 
         if(file == null || !filename.contains("."))
             throw new IllegalArgumentException("유효하지 않은 파일입니다.");
-        else if(!verifyExtension(filename.split("\\.")[1].toLowerCase()))
-            throw new IllegalArgumentException("유효하지 않은 확장자명입니다.");
 
-        String extension = filename.split("\\.")[1].toLowerCase();
+        int lastDotIndex = filename.lastIndexOf(".");
+        String extension = filename.substring(lastDotIndex + 1).toLowerCase();
+
+        if (!verifyExtension(extension))
+            throw new IllegalArgumentException("유효하지 않은 확장자명입니다.");
 
         String uploadedFile = "author/" + saveName + "." + extension;
 
