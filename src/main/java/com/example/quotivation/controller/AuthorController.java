@@ -3,6 +3,7 @@ package com.example.quotivation.controller;
 import com.example.quotivation.dto.author.response.AuthorDescriptionResponse;
 import com.example.quotivation.dto.author.response.AuthorDetailsResponse;
 import com.example.quotivation.dto.author.response.AuthorListInfo;
+import com.example.quotivation.dto.author.response.admin.AuthorUpdateListResponse;
 import com.example.quotivation.dto.quote.response.QuoteListInfo;
 import com.example.quotivation.service.AuthorService;
 import com.example.quotivation.service.QuoteService;
@@ -38,6 +39,24 @@ public class AuthorController {
         authorService.addAuthor(name, image, saveName, description);
 
         return "admin/add-author-page";
+    }
+
+    @GetMapping("/admin/update-author")
+    public String getUpdateAuthorPage(Model model) {
+        AuthorUpdateListResponse response = authorService.getEnglishAuthors();
+
+        model.addAttribute("count", response.getCount());
+        model.addAttribute("authors", response.getAuthors());
+
+        return "admin/update-author-page";
+    }
+
+    @PostMapping("/admin/update-author")
+    public String updateAuthor(@RequestParam("id") Long id,
+                               @RequestParam("newName") String newName) {
+        authorService.updateEnglishAuthor(id, newName);
+
+        return "admin/update-author-page";
     }
 
     @GetMapping("/authors")

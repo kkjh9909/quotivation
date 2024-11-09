@@ -48,4 +48,8 @@ public class Author extends Timestamp {
     public void decreaseSubscriptionCount() {
         this.subscriptionCount--;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

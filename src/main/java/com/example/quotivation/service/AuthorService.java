@@ -1,6 +1,8 @@
 package com.example.quotivation.service;
 
 import com.example.quotivation.dto.author.response.*;
+import com.example.quotivation.dto.author.response.admin.AuthorUpdateListResponse;
+import com.example.quotivation.dto.author.response.admin.AuthorUpdateResponse;
 import com.example.quotivation.entity.Author;
 import com.example.quotivation.repository.AuthorRepository;
 import com.example.quotivation.service.sort.author.AuthorSortStrategyFactory;
@@ -48,7 +50,7 @@ public class AuthorService {
 
     @Transactional
     public void addAuthor(String name, MultipartFile image, String saveName, String description) throws IOException {
-        imageUploadService.uploadImage(image, saveName);
+        imageUploadService.uploadImageToR2(image, saveName);
         String imageUrl = imageUploadService.getImageUrl();
 
         Author author = Author.make(name, description, imageUrl);
@@ -80,5 +82,19 @@ public class AuthorService {
 
     public long getAllCount() {
         return authorRepository.count();
+    }
+
+    public AuthorUpdateListResponse getEnglishAuthors() {
+        List<Author> authors = authorRepository.findAuthorsWithEnglishAndSpecialCharacter();
+        List<AuthorUpdateResponse> dto = authors.stream().map(AuthorUpdateResponse::make).toList();
+
+        return new AuthorUpdateListResponse(0, dto);
+    }
+
+    @Transactional
+    public void updateEnglishAuthor(Long id, String name) {
+        Optional<Author> author = authorRepository.findById(id);
+
+        author.get().updateName(name);
     }
 }
