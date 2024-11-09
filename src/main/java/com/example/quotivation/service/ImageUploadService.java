@@ -17,13 +17,31 @@ import java.util.UUID;
 public class ImageUploadService {
 
     private final AmazonS3Client amazonS3Client;
+    private final AmazonS3Client r2Client;
 
     @Value("${cloud.aws.bucket}")
     private String s3Bucket;
 
+    @Value("${cloud.r2.bucket}")
+    private String r2Bucket;
+
+    @Value("${cloud.r2.endpoint}")
+    private String r2Endpoint;
+
+    @Value("${cloud.r2.image-url}")
+    private String r2ImageUrl;
+
     private String imageUrl;
 
-    public void uploadImage(MultipartFile file, String saveName) throws IOException {
+    public void uploadImageToS3(MultipartFile file, String saveName) throws IOException {
+        uploadImage(file, saveName, amazonS3Client, s3Bucket, "s3");
+    }
+
+    public void uploadImageToR2(MultipartFile file, String saveName) throws IOException {
+        uploadImage(file, saveName, r2Client, r2Bucket, "r2");
+    }
+
+    public void uploadImage(MultipartFile file, String saveName, AmazonS3Client client, String bucket, String type) throws IOException {
         String filename = file.getOriginalFilename();
 
         if(file == null || !filename.contains("."))
@@ -42,11 +60,18 @@ public class ImageUploadService {
         metadata.setContentLength(file.getSize());
 
         File convertFile = convertFile(file);
+        PutObjectRequest putRequest = new PutObjectRequest(bucket, uploadedFile, convertFile)
+                .withMetadata(metadata);
 
-        amazonS3Client.putObject(new PutObjectRequest(s3Bucket, uploadedFile, convertFile));
+        client.putObject(putRequest);
 
-        this.imageUrl = "https://" + s3Bucket + ".s3.ap-northeast-2.amazonaws.com/" + uploadedFile;
+        if ("s3".equals(type))
+            this.imageUrl = "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + uploadedFile;
+        else if ("r2".equals(type))
+            this.imageUrl = r2ImageUrl + "/" + uploadedFile;
     }
+
+
 
     public String getImageUrl() {
         return imageUrl;
