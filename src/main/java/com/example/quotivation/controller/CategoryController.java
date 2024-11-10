@@ -63,6 +63,6 @@ public class CategoryController {
 
         model.addAttribute("currentPage", pageable.getPageNumber() + 1);
 
-        return "category-quotes-page";
+        return "category/category-quotes-page";
     }
 }
