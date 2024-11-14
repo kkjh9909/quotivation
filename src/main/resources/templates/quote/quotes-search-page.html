@@ -85,21 +85,20 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
+
     <div class="bg-search">
         <div class="search-wrapper">
             <input type="text" class="search-input" placeholder="검색할 단어를 입력하세요." id="word" onkeypress="handleKeyPress(event)">
             <button class="search-button" type="button" onclick="searchQuote()"></button>
         </div>
     </div>
-    <div class="container mt-3">
-        <div class="container">
-            <h2><span th:text="${query}"></span> 검색 결과</h2>
-            <ul class="d-flex flex-row w-100 mt-4 p-0">
-                <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('all')} ? 'active' : ''" onclick="searchAll()">전체 결과</li>
-                <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('sentence')} ? 'active' : ''" onclick="searchSentence()">문장 검색</li>
-                <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('author')} ? 'active' : ''" onclick="searchAuthor()">저자 검색</li>
-            </ul>
-        </div>
+    <div class="main-content">
+        <span th:text="${\'query\'}"></span> 검색 결과</h2>
+        <ul class="d-flex flex-row w-100 mt-4 p-0">
+            <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('all')} ? 'active' : ''" onclick="searchAll()">전체 결과</li>
+            <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('sentence')} ? 'active' : ''" onclick="searchSentence()">문장 검색</li>
+            <li class="list-group-item flex-fill text-center border border-dark list-box" th:classappend="${type.equals('author')} ? 'active' : ''" onclick="searchAuthor()">저자 검색</li>
+        </ul>
         <!--   문장 검색     -->
         <div th:if="${quotes != null}">
             <div class="hr-with-text">
@@ -111,7 +110,6 @@
                 <div class="text-center">
                     <span class="text-muted">등록된 데이터가 없습니다</span>
                 </div>
-                <hr>
             </div>
             <th:block th:if="${!#lists.isEmpty(quotes.quotes)}" th:each="quote : ${quotes.quotes}">
                 <div class="table-light">

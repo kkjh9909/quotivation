@@ -255,96 +255,88 @@
             right: 0;
             margin: 10px;
         }
-        .centered-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%; /* 부모 요소의 높이를 설정 */
+        h2 {
+            text-align: center;
+            padding: 20px 0;
+        }
+        table. th,
+        table. td {
+            white-space: nowrap;
         }
     </style>
     <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" id="word">
-        </div>
-        <div class="col-auto">
-            <button class="btn btn-outline-success" th:onclick="searchQuote()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </button>
+    <div class="bg-search">
+        <div class="search-wrapper">
+            <input type="text" class="search-input" placeholder="검색할 단어를 입력하세요." id="word" onkeypress="handleKeyPress(event)">
+            <button class="search-button" type="button" onclick="searchQuote()"></button>
         </div>
     </div>
-    <hr>
-    <div class="container">
-        <div class="row bg-success p-2 text-dark bg-opacity-25">
-            <div class="col-3">
-                <img th:src="${quote.photo}" alt="이미지" class="img-fluid w-100">
-                <div class="text-center mt-3">
-                    <h4 th:text="'-' + ${quote.author} + '-'">저자</h4>
+    <div class="ms-5 me-5 mb-2 p-5">
+        <div class="row">
+            <div class="row bg-success p-2 text-dark bg-opacity-25">
+                <div class="col-3">
+                    <img th:src="${quote.photo}" alt="이미지" class="img-fluid w-100">
+                    <div class="text-center mt-3">
+                        <h4 th:text="'-' + ${quote.author} + '-'">저자</h4>
+                    </div>
                 </div>
-            </div>
-            <div class="col position-relative">
-                <div id="subscribeButton" class="text-end">
-                    <button class="btn" onclick="clickSubscriptionButton()">
-                        <i class="material-icons"
-                           th:switch="${isSubscribe}">
-                            <span th:case="true">star</span> <!-- 채워진 별 -->
-                            <span th:case="false">star_border</span>
-                        </i>
-                    </button>
-                </div>
-                <p th:text="${quote.content}" class="centered quote-content"></p>
-                <div class="bottom-right">
-                    <div class="row">
-                        <div id="likeButton" class="col">
-                            <button class="btn" onclick="clickLikeButton()">
-                                <i class="material-icons"
-                                   th:switch="${isLike}">
-                                    <span th:case="true">thumb_up</span> <!-- 채워짐 -->
-                                    <span th:case="false">thumb_up_off_alt</span>
-                                </i>
-                                <b th:id="likeCount" id="likeCount" th:text="${likeCount}">0</b>
-                            </button>
-                        </div>
-                        <div id="dislikeButton" class="col">
-                            <button class="btn" onclick="clickDislikeButton()">
-                                <i class="material-icons"
-                                   th:switch="${isDislike}">
-                                    <span th:case="true">thumb_down</span>
-                                    <span th:case="false">thumb_down_off_alt</span>
-                                </i>
-                                <b th:id="dislikeCount" id="dislikeCount" th:text="${dislikeCount}">0</b>
-                            </button>
+                <div class="col position-relative">
+                    <div id="subscribeButton" class="text-end">
+                        <button class="btn" onclick="clickSubscriptionButton()">
+                            <i class="material-icons"
+                               th:switch="${isSubscribe}">
+                                <span th:case="true">star</span> <!-- 채워진 별 -->
+                                <span th:case="false">star_border</span>
+                            </i>
+                        </button>
+                    </div>
+                    <p th:text="${quote.content}" class="centered quote-content"></p>
+                    <div class="bottom-right">
+                        <div class="row">
+                            <div id="likeButton" class="col">
+                                <button class="btn" onclick="clickLikeButton()">
+                                    <i class="material-icons"
+                                       th:switch="${isLike}">
+                                        <span th:case="true">thumb_up</span> <!-- 채워짐 -->
+                                        <span th:case="false">thumb_up_off_alt</span>
+                                    </i>
+                                    <b th:id="likeCount" id="likeCount" th:text="${likeCount}">0</b>
+                                </button>
+                            </div>
+                            <div id="dislikeButton" class="col">
+                                <button class="btn" onclick="clickDislikeButton()">
+                                    <i class="material-icons"
+                                       th:switch="${isDislike}">
+                                        <span th:case="true">thumb_down</span>
+                                        <span th:case="false">thumb_down_off_alt</span>
+                                    </i>
+                                    <b th:id="dislikeCount" id="dislikeCount" th:text="${dislikeCount}">0</b>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="mt-3"></div>
+            <table class="table table-bordered table-hover w-100">
+                <thead>
+                <tr>
+                    <th>저자</th>
+                    <th>명언</th>
+                </tr>
+                </thead>
+                <tbody th:each="relatedQuote: ${relatedQuotes}">
+                <tr>
+                    <td th:text="${relatedQuote.author}">author</td>
+                    <td th:text="${relatedQuote.content}">quote</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <hr>
-    <div class="row align-items-stretch">
-        <div class="col-3" th:each="relatedQuote: ${relatedQuotes}">
-            <div class="card">
-                <img th:src="${relatedQuote.photo}" class="card-img-top" alt="author">
-                <div class="card-body">
-                    <p class="card-text simply-text" th:text="${relatedQuote.content}"></p>
-                    <div class="text-end">
-                        <p class="card-text simply-text" th:text="'-' + ${relatedQuote.author} + '-'"></p>
-                    </div>
-                    <div class="text-center">
-                        <a th:href="@{'/quote/' + ${relatedQuote.id}}" class="btn btn-primary">바로가기</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
 </body>
 <div th:insert="~{fragments/footer :: footer}"></div>
 </html>
