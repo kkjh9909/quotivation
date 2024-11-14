@@ -51,7 +51,7 @@ public class CategoryController {
 
     @GetMapping("/category/{categoryId}")
     public String getCategoryQuotesPage(Model model,
-                                        @PageableDefault(sort = {"content"}, direction = Sort.Direction.ASC) Pageable pageable,
+                                        @PageableDefault(sort = {"content"}, direction = Sort.Direction.ASC, size = 50) Pageable pageable,
                                         @PathVariable Long categoryId) {
         QuoteListInfo response = quoteService.getQuotesByCategory(categoryId, pageable);
 

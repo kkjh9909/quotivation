@@ -1,0 +1,29 @@
+img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: cover; /* 이미지가 잘리지 않고 비율이 유지되도록 */
+}
+
+/* 데스크탑 화면 */
+@media (min-width: 1024px) {
+    .responsive-image {
+        width: 80%; /* 데스크탑 크기에 맞게 조정 */
+        max-width: 800px; /* 최대 너비 설정 */
+    }
+}
+
+/* 태블릿 화면 */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .responsive-image {
+        width: 90%; /* 태블릿 크기에 맞게 조정 */
+        max-width: 600px;
+    }
+}
+
+/* 모바일 화면 */
+@media (max-width: 767px) {
+    .responsive-image {
+        width: 100%; /* 모바일 크기에 맞게 조정 */
+    }
+}

@@ -62,7 +62,7 @@ public class AuthorController {
     @GetMapping("/authors")
     public String getAuthorPage(Model model,
                                 @RequestParam(value = "order", defaultValue = "alpha") String order,
-                                @PageableDefault(size = 10) Pageable pageable) {
+                                @PageableDefault(size = 50) Pageable pageable) {
         AuthorListInfo response = authorService.getAllAuthors(pageable, order);
 
         if(response.getTotalPages() < pageable.getPageNumber())

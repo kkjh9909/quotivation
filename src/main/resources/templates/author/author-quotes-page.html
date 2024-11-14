@@ -20,46 +20,32 @@
 				window.location="/categories?order=" + 'alpha'
 		}
     </script>
-    <title th:text="${author}">Document</title>
+    <title th:text="${authorName} + ' 명언'">Document</title>
     <meta name="google-site-verification" content="dfCocKxAKm02TrZOrhOi6yjgM0vE3qvZ-l2NF0F4Orc" />
-
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>
-                <div class="row">
-                    <div class="col-auto">
-                        <span th:text="${authorName}"></span>
-                        (<span th:text="${authorDescription}"></span>)
-                    </div>
-                </div>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <th:block th:each="quote : ${quotes}">
-            <tr>
-                <th th:onclick="'location.href=\'' + @{'/quote/' + ${quote.id}} + '\';'">
+<div class="main-content">
+        <div class="mt-5">
+            <div class="col-auto">
+                <span class="h3" th:text="${authorName}"></span><span class="h3" th:text="'(' + ${authorDescription} + ')'"></span>
+            </div>
+        </div>
+        <div class="mt-2">
+            <div class="row">
+                <div th:each="quote: ${quotes}" class="card mt-2">
                     <a th:href="@{'/quote/' + ${quote.id}}" class="card-body">
-                        <div>
-                            <p th:text="${quote.content}"></p>
-                        </div>
-                        <div class="col text-end">
+                        <span th:text="${quote.content}"></span>
+                        <div th:class="text-end">
                             <span th:text="'-' + ${quote.author} + '-'"></span>
                         </div>
                     </a>
-                </th>
-            </tr>
-        </th:block>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+
     <div class="text-center" th:if="${totalPages < 1}">
         <img src="/image/empty.PNG" alt="이미지" class="img-fluid">
-        검색 결과가 없어요
     </div>
     <nav aria-label="Page navigation example" th:if="${totalPages > 0}">
         <ul class="pagination justify-content-center">

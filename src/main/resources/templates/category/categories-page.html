@@ -11,9 +11,6 @@
     <script type="text/javascript" th:inline="javascript">
 		function sortCategory() {
 			const option = document.querySelector('select[name="sort"]').value;
-
-			console.log(option)
-
 			if(option === "popular")
 				window.location="/categories?order=" + 'popular'
 			else
@@ -26,7 +23,7 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
+<div class="main-content">
     <table class="table">
         <thead>
         <tr>
