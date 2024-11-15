@@ -22,15 +22,19 @@ public class User extends Timestamp {
 
     private String picture;
 
-    
+    private String provider;
+
+    private String providerId;
 
     public User() {}
 
     @Builder
-    public User(String name, String password, String email, String role, String picture) {
+    public User(String name, String password, String email, String provider, String providerId, String role, String picture) {
         this.name = name;
         this.password = password;
         this.email = email;
+        this.provider = provider;
+        this.providerId = providerId;
         this.role = role;
         this.picture = picture;
     }
