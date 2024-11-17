@@ -23,8 +23,8 @@ public class LoginAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info(request.getRemoteAddr());
         try {
+            log.info("{} : {}",request.getRemoteAddr(), request.getRequestURI());
             String token = jwtProvider.resolveToken(request);
             if(token != null && jwtProvider.verifyToken(token)) {
                 Authentication authentication = jwtProvider.getAuthentication(token);
@@ -41,5 +41,16 @@ public class LoginAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        return path.startsWith("/image/") ||
+                path.equals("/favicon.ico") ||
+                path.startsWith("/static/") ||
+                path.startsWith("/css/") ||
+                path.startsWith("/js/");
     }
 }

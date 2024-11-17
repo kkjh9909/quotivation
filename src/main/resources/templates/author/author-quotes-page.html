@@ -12,8 +12,6 @@
 		function sortCategory() {
 			const option = document.querySelector('select[name="sort"]').value;
 
-			console.log(option)
-
 			if(option === "popular")
 				window.location="/categories?order=" + 'popular'
 			else
@@ -28,7 +26,7 @@
 <div class="main-content">
         <div class="mt-5">
             <div class="col-auto">
-                <span class="h3" th:text="${authorName}"></span><span class="h3" th:text="'(' + ${authorDescription} + ')'"></span>
+                <span class="h3" th:text="${authorName}"></span><span class="h3" th:if="${authorDescription != null}" th:text="'(' + ${authorDescription} + ')'"></span>
             </div>
         </div>
         <div class="mt-2">

@@ -24,7 +24,7 @@
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container">
+<div class="main-content">
     <table class="table">
         <thead>
         <tr>
@@ -52,9 +52,6 @@
                             <span th:text="${author.name}"></span>
                             <span th:text="'(' + ${author.count} + ')'"></span>
                         </div>
-                        <div class="col text-end">
-                            <button class="btn btn-outline-primary">바로가기</button>
-                        </div>
                     </div>
                 </th>
             </tr>
@@ -63,7 +60,6 @@
     </table>
     <div class="text-center" th:if="${totalPages < 1}">
         <img src="/image/empty.PNG" alt="이미지" class="img-fluid">
-        검색 결과가 없어요
     </div>
     <nav aria-label="Page navigation example"  th:if="${totalPages > 0}">
         <ul class="pagination justify-content-center">

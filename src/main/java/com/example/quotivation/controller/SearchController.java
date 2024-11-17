@@ -18,7 +18,7 @@ public class SearchController {
     private final SearchStrategyFactory searchStrategyFactory;
 
     @GetMapping("/search")
-    public String searchQuote(@RequestParam String query,
+    public String searchQuote(@RequestParam(defaultValue = "  ") String query,
                               @RequestParam(defaultValue = "all") String type,
                               @PageableDefault(size = 5) Pageable pageable,
                               Model model) {
