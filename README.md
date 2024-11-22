@@ -14,7 +14,7 @@ https://quotivation.kr
 - Spring Boot
 - Spring Data JPA
 - Spring Security
-- Mysql(with AWS RDS)
+- Mysql(AWS RDS)
 
 ### Infra
 - Deployment: Docker (AWS EC2)
