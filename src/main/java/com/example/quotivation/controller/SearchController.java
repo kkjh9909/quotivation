@@ -1,5 +1,6 @@
 package com.example.quotivation.controller;
 
+import com.example.quotivation.aop.LogQuery;
 import com.example.quotivation.dto.search.response.SearchResultResponse;
 import com.example.quotivation.service.strategy.search.SearchStrategy;
 import com.example.quotivation.service.strategy.search.SearchStrategyFactory;
@@ -17,6 +18,7 @@ public class SearchController {
 
     private final SearchStrategyFactory searchStrategyFactory;
 
+    @LogQuery
     @GetMapping("/search")
     public String searchQuote(@RequestParam(defaultValue = "  ") String query,
                               @RequestParam(defaultValue = "all") String type,
