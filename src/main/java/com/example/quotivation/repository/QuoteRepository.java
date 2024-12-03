@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -24,5 +25,16 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     List<Quote> findByContentContainingOrderByCreatedAtDesc(String query, Pageable pageable);
 
+    @Query(value = "SELECT * FROM quote q " +
+            "WHERE MATCH(q.content) AGAINST(:query IN BOOLEAN MODE) " +
+            "ORDER BY q.created_at DESC",
+            countQuery = "SELECT count(*) FROM quote q " +
+                    "WHERE MATCH(q.content) AGAINST(:query IN BOOLEAN MODE)",
+            nativeQuery = true)
+    Page<Quote> searchByContent(@Param("query") String query, Pageable pageable);
+
     Long countByContentContaining(String query);
+
+    @Query(value = "SELECT * FROM quote order by RAND() limit 1",nativeQuery = true)
+    Quote findRandomQuote();
 }

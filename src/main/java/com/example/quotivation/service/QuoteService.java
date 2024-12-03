@@ -47,7 +47,6 @@ public class QuoteService {
     public List<LatestQuote> getLatestQuotes() {
         List<Quote> quotes = quoteRepository.findByOrderByUpdatedAtDesc(PageRequest.of(0, 10)).getContent();
 
-
         return quotes.stream().map(LatestQuote::make).collect(Collectors.toList());
     }
 
@@ -119,8 +118,9 @@ public class QuoteService {
     }
 
     public SearchQuoteListResponse searchQuotesPreview(String query) {
-        List<Quote> quotes = quoteRepository.findByContentContainingOrderByCreatedAtDesc(query, PageRequest.of(0, 5));
-        Long totalCount = quoteRepository.countByContentContaining(query);
+        Page<Quote> quotesPage = quoteRepository.searchByContent(query + "*", PageRequest.of(0, 5));
+        List<Quote> quotes = quotesPage.getContent();
+        Long totalCount = quotesPage.getTotalElements();
 
         return new SearchQuoteListResponse(quotes.stream().map(SearchQuoteResponse::make).collect(Collectors.toList()),
                 quotes.size(), totalCount);

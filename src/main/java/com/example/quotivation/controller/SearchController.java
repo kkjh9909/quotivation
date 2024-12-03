@@ -18,7 +18,6 @@ public class SearchController {
 
     private final SearchStrategyFactory searchStrategyFactory;
 
-    @LogQuery
     @GetMapping("/search")
     public String searchQuote(@RequestParam(defaultValue = "  ") String query,
                               @RequestParam(defaultValue = "all") String type,
