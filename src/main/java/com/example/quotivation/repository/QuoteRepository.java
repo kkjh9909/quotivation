@@ -35,6 +35,5 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     Long countByContentContaining(String query);
 
-    @Query(value = "SELECT * FROM quote order by RAND() limit 1",nativeQuery = true)
-    Quote findRandomQuote();
+    Page<Quote> findAll(Pageable pageable);
 }
