@@ -2,6 +2,7 @@ package com.example.quotivation.service;
 
 import com.example.quotivation.dto.quote.request.AddQuoteRequest;
 import com.example.quotivation.dto.quote.response.*;
+import com.example.quotivation.dto.quote.response.api.QuoteByCategoryResponse;
 import com.example.quotivation.entity.*;
 import com.example.quotivation.repository.*;
 import com.example.quotivation.security.AuthenticationService;
@@ -32,14 +33,9 @@ public class QuoteService {
 
     public TodayQuote getTodayQuote() {
         long count = quoteRepository.count();
-        Random random = new Random();
+        int randomNum = getRandomNumber(count);
 
-        if(count == 0)
-            return null;
-
-        int i = random.nextInt((int)count);
-
-        Quote quote = quoteRepository.findAll(PageRequest.of(i, 1)).getContent().get(0);
+        Quote quote = quoteRepository.findAll(PageRequest.of(randomNum, 1)).getContent().get(0);
 
         return TodayQuote.make(quote);
     }
@@ -136,5 +132,29 @@ public class QuoteService {
 
     public long getAllCount() {
         return quoteRepository.count();
+    }
+
+    public QuoteByCategoryResponse getQuoteByCategory(String categoryName) {
+        categoryName = categoryName.replace(" ", "");
+
+        Optional<Category> category = categoryRepository.findByName(categoryName);
+        if(category.isEmpty())
+            throw new IllegalArgumentException("Category Not Found: " + categoryName);
+
+        long count = quoteRepository.countByCategory(category.get());
+
+        int randomNum = getRandomNumber(count);
+        Quote quote = quoteRepository.findByCategory(category.get(), PageRequest.of(randomNum, 1)).getContent().get(0);
+
+        return QuoteByCategoryResponse.make(quote);
+    }
+
+    private int getRandomNumber(long count) {
+        Random random = new Random();
+
+        if(count == 0)
+            return -1;
+
+        return random.nextInt((int)count);
     }
 }

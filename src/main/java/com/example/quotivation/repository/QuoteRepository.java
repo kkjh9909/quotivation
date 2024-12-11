@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface QuoteRepository extends JpaRepository<Quote, Long> {
     Page<Quote> findByOrderByUpdatedAtDesc(Pageable pageable);
@@ -36,4 +37,6 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
     Long countByContentContaining(String query);
 
     Page<Quote> findAll(Pageable pageable);
+
+    int countByCategory(Category category);
 }

@@ -63,4 +63,9 @@ public class QuoteController {
 
         return "quote/quote-detail-page";
     }
+
+    @GetMapping("/api/quotes")
+    public String getQuotesApiPage(Model model) {
+        return "api/quote-api-explain-page";
+    }
 }
