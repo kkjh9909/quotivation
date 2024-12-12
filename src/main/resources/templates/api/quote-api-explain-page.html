@@ -29,7 +29,10 @@
     <!-- 좌측 사이드바 -->
     <div class="col-md-3 p-0" id="sidebar">
         <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action" id="item-1">Quote</a>
+            <div class="list-group">
+                <a href="/api/quote" class="list-group-item list-group-item-action" id="item-1" th:classappend="${url.equals('/api/quote')} ? 'active' : ''">Quote</a>
+                <a href="/api/quotes" class="list-group-item list-group-item-action" id="item-2" th:classappend="${url.equals('/api/quotes')} ? 'active' : ''">Quotes</a>
+            </div>
         </div>
     </div>
     <div class="col-md-9">
@@ -82,7 +85,7 @@
                         </div>
                     </div>
                     <div class="w-100">
-                        <span id="entire-url" class="custom-span">http://localhost/v1/quotes?category=동기부여</span>
+                        <span id="entire-url" class="custom-span">http://localhost/v1/quote?category=동기부여</span>
                     </div>
 
                     <button class="btn btn-primary mt-4" onclick="fetchQuote()">명언 가져오기</button>
@@ -139,7 +142,7 @@ fetch('https://api.quotivation.kr/v1/quote', {
 
 	// input의 입력값을 실시간으로 span에 반영
 	inputElement.addEventListener('input', function () {
-		outputSpan.textContent = "http://localhost/v1/quotes?category=" + this.value;
+		outputSpan.textContent = "http://localhost/v1/quote?category=" + this.value;
 	});
 
 	document.querySelectorAll('[id^="copy-button-"]').forEach(button => {
@@ -170,24 +173,6 @@ fetch('https://api.quotivation.kr/v1/quote', {
 		} else {
 			this.textContent = '카테고리 보기';
 		}
-	});
-
-	function setActiveCategory(categoryId) {
-		const items = document.querySelectorAll('.list-group-item');
-		items.forEach(item => item.classList.remove('active')); // 모든 항목에서 active 제거
-		document.getElementById(categoryId).classList.add('active'); // 클릭된 항목에 active 추가
-	}
-
-	document.getElementById('item-1').addEventListener('click', function () {
-		setActiveCategory('item-1');
-		document.getElementById('category-input').value = '동기부여';
-		fetchQuote();
-	});
-
-	document.getElementById('item-2').addEventListener('click', function () {
-		setActiveCategory('item-2');
-		document.getElementById('category-input').value = '영감';
-		fetchQuote();
 	});
 </script>
 <div th:insert="~{fragments/footer :: footer}"></div>

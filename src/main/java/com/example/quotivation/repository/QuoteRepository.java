@@ -37,6 +37,4 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
     Long countByContentContaining(String query);
 
     Page<Quote> findAll(Pageable pageable);
-
-    int countByCategory(Category category);
 }

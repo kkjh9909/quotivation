@@ -1,7 +1,6 @@
 package com.example.quotivation.rest_controller;
 
 import com.example.quotivation.dto.quote.response.api.QuoteByCategoryResponse;
-import com.example.quotivation.service.QuoteService;
 import com.example.quotivation.service.api.QuoteApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,12 +18,11 @@ import java.util.List;
 @RequestMapping("/v1")
 public class QuoteRestController {
 
-    private final QuoteService quoteService;
     private final QuoteApiService quoteApiService;
 
     @GetMapping("/quote")
     public ResponseEntity<?> getQuote(@RequestParam(name = "category", defaultValue = "동기 부여") String category) {
-        QuoteByCategoryResponse response = quoteService.getQuoteByCategory(category);
+        QuoteByCategoryResponse response = quoteApiService.getQuoteByCategory(category);
 
         return ResponseEntity.ok(response);
     }

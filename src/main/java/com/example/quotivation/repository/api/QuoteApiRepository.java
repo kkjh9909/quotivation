@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QuoteApiRepository extends JpaRepository<Quote, Long> {
 
     Page<Quote> findByCategory(Category category, Pageable pageable);
+
+    int countByCategory(Category category);
 }

@@ -134,21 +134,6 @@ public class QuoteService {
         return quoteRepository.count();
     }
 
-    public QuoteByCategoryResponse getQuoteByCategory(String categoryName) {
-        categoryName = categoryName.replace(" ", "");
-
-        Optional<Category> category = categoryRepository.findByName(categoryName);
-        if(category.isEmpty())
-            throw new IllegalArgumentException("Category Not Found: " + categoryName);
-
-        long count = quoteRepository.countByCategory(category.get());
-
-        int randomNum = getRandomNumber(count);
-        Quote quote = quoteRepository.findByCategory(category.get(), PageRequest.of(randomNum, 1)).getContent().get(0);
-
-        return QuoteByCategoryResponse.make(quote);
-    }
-
     private int getRandomNumber(long count) {
         Random random = new Random();
 
