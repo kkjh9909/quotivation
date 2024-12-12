@@ -9,6 +9,7 @@ import com.example.quotivation.service.AuthorService;
 import com.example.quotivation.service.CategoryService;
 import com.example.quotivation.service.QuoteService;
 import com.example.quotivation.service.UserQuoteSubscriptionService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,8 +65,15 @@ public class QuoteController {
         return "quote/quote-detail-page";
     }
 
-    @GetMapping("/api/quotes")
-    public String getQuotesApiPage(Model model) {
+    @GetMapping("/api/quote")
+    public String getQuoteApiPage(Model model, HttpServletRequest request) {
+        model.addAttribute("url", request.getRequestURI());
         return "api/quote-api-explain-page";
+    }
+
+    @GetMapping("/api/quotes")
+    public String getQuotesApiPage(Model model, HttpServletRequest request) {
+        model.addAttribute("url", request.getRequestURI());
+        return "api/quotes-api-explain-page";
     }
 }
