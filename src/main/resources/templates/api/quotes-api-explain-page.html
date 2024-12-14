@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="w-100">
-                            <span id="entire-url" class="custom-span">http://localhost/v1/quotes?category=동기부여</span>
+                            <span id="entire-url" class="custom-span">https://api.quotivation.kr/v1/quotes?category=동기부여</span>
                         </div>
 
                         <button class="btn btn-primary mt-4" onclick="fetchQuote()">명언 가져오기</button>
@@ -137,8 +137,9 @@ fetch('https://api.quotivation.kr/v1/quotes', {
 <div th:insert="~{fragments/footer :: footer}"></div>
 <script>
 	function fetchQuote() {
+
 		const category = document.getElementById('category-input').value;
-		const url = `http://localhost:8080/v1/quotes?category=${encodeURIComponent(category)}`;
+		const url = `https://api.quotivation.kr/v1/quotes?category=${encodeURIComponent(category)}`;
 
 		fetch(url, {
 			method: 'GET',
@@ -161,20 +162,16 @@ fetch('https://api.quotivation.kr/v1/quotes', {
 	const inputElement = document.getElementById('category-input');
 	const outputSpan = document.getElementById('entire-url');
 
-	// input의 입력값을 실시간으로 span에 반영
 	inputElement.addEventListener('input', function () {
-		outputSpan.textContent = "http://localhost/v1/quotes?category=" + this.value;
+		outputSpan.textContent = "https://api.quotivation.kr/v1/quotes?category=" + this.value;
 	});
 
 	document.querySelectorAll('[id^="copy-button-"]').forEach(button => {
 		button.addEventListener('click', function () {
-			// data-copy-id 속성 값 가져오기
 			const textId = this.getAttribute('data-copy-id');
 
-			// 복사할 텍스트 가져오기
 			const textToCopy = document.getElementById(textId).textContent;
 
-			// 클립보드에 복사
 			window.navigator.clipboard.writeText(textToCopy)
 				.then(() => {
 					console.log('복사 완료');
