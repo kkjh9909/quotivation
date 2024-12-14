@@ -3,7 +3,8 @@
 ***"Inspire and be inspired."***   
 Quotivation은 명언과 동기부여를 위한 플랫폼으로, 사용자들에게 긍정적인 메시지를 전달합니다.
 
-[웹 사이트 바로 가기](https://quotivation.kr)
+[https://quotivation.kr](https://quotivation.kr) 사이트 주소  
+[https://api.quotivation.kr/api/quote](https://api.quotivation.kr/api/quote) API 함수 주소
 
 ## 🛠️ 프로젝트 스택
 ### 👤 클라이언트
@@ -21,6 +22,7 @@ Quotivation은 명언과 동기부여를 위한 플랫폼으로, 사용자들에
 
 ### 🔧 인프라
 - 배포: Docker (AWS EC2)
+- 리버스 프록시 NGINX
 - 모니터링: Prometheus, Grafana
 - 로그 관리: AWS CloudWatch
 
@@ -81,6 +83,9 @@ quotivation
     │  │  └─quotivation
     │  │     ├─config
     │  │     ├─controller
+    │  │     ├─rest_controller
+    │  │     ├─aop
+    │  │     ├─cache
     │  │     ├─dto
     │  │     │  ├─author
     │  │     │  │  ├─request
@@ -106,14 +111,16 @@ quotivation
     │  │     │  └─response
     │  │     ├─oauth
     │  │     ├─repository
+    │  │     ├─rest_repository
     │  │     ├─security
     │  │     └─service
-    │  │         ├─sort
-    │  │         │  ├─author
-    │  │         │  └─category
-    │  │         └─strategy
-    │  │             ├─search
-    │  │             └─user
+    │  │     ├    ├─sort
+    │  │     ├    │  ├─author
+    │  │     ├    │  └─category
+    │  │     ├    └─strategy
+    │  │     ├        ├─search
+    │  │     ├        └─user
+    │  │     ├─rest_service
     │  └─resources
     │      ├─static
     │      │  ├─css
