@@ -1,5 +1,6 @@
 package com.example.quotivation.aop;
 
+import com.example.quotivation.service.log.LogSendService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,24 +18,38 @@ import java.lang.reflect.Method;
 public class CommonLoggingAspect {
 
     private final HttpServletRequest request;
+    private final LogSendService logSendService;
 
-    @Pointcut("execution(* com.example.quotivation.controller..*.*(..))")
-    private void cut(){}
 
-    @Around("cut()")
-    public Object aroundLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    @Pointcut("within(@org.springframework.stereotype.Controller *) || within(@org.springframework.web.bind.annotation.RestController *)")
+    private void generalRequest() {}
+
+    @Pointcut("execution(* com.example.quotivation.controller.SearchController.*(..))")
+    private void searchRequest() {}
+
+
+    @Around("generalRequest() && !searchRequest()")
+    public Object generalLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         String clientIp = getClientIp();
         String requestUrl = getRequestUrl();
+
+        logSendService.sendLog(proceedingJoinPoint);
 
         log.info("{} - {}", clientIp, requestUrl);
 
         return proceedingJoinPoint.proceed();
     }
 
+    @Around("searchRequest()")
+    public Object searchLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        String clientIp = getClientIp();
+        String requestUrl = getRequestUrl();
 
-    private Method getMethod(ProceedingJoinPoint proceedingJoinPoint) {
-        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-        return signature.getMethod();
+        logSendService.sendLog(proceedingJoinPoint);
+
+        log.info("{} - {}", clientIp, requestUrl);
+
+        return proceedingJoinPoint.proceed();
     }
 
     private String getRequestUrl() {
@@ -42,9 +57,9 @@ public class CommonLoggingAspect {
     }
 
     private String getClientIp() {
-        String clientIp = request.getHeader("X-Forwarded-For"); // 프록시나 로드밸런서가 추가한 헤더
+        String clientIp = request.getHeader("X-Forwarded-For");
         if (clientIp == null || clientIp.isEmpty()) {
-            clientIp = request.getRemoteAddr(); // 기본 클라이언트 IP
+            clientIp = request.getRemoteAddr();
         }
         return clientIp;
     }

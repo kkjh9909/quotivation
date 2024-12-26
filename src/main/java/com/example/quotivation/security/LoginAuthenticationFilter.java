@@ -24,7 +24,6 @@ public class LoginAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-//            log.info("{} : {}",request.getRemoteAddr(), request.getRequestURI());
             String token = jwtProvider.resolveToken(request);
             if(token != null && jwtProvider.verifyToken(token)) {
                 Authentication authentication = jwtProvider.getAuthentication(token);
