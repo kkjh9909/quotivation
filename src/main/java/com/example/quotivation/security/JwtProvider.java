@@ -16,6 +16,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,9 +66,9 @@ public class JwtProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new TokenExpiredException("Token expired", e);
+            throw new TokenExpiredException("Token expired", HttpStatus.UNAUTHORIZED);
         } catch (SignatureException e) {
-            throw new InvalidTokenException("Invalid token", e);
+            throw new InvalidTokenException("Invalid token", HttpStatus.UNAUTHORIZED);
         }
     }
 
