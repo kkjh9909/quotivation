@@ -2,6 +2,7 @@ package com.example.quotivation.security;
 
 import com.example.quotivation.entity.User;
 
+import com.example.quotivation.exception.ExceptionMessages;
 import com.example.quotivation.exception.response.InvalidTokenException;
 import com.example.quotivation.exception.response.TokenExpiredException;
 import com.example.quotivation.service.UserService;
@@ -66,9 +67,9 @@ public class JwtProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new TokenExpiredException("Token expired", HttpStatus.UNAUTHORIZED);
+            throw new TokenExpiredException(ExceptionMessages.TOKEN_EXPIRED, HttpStatus.UNAUTHORIZED);
         } catch (SignatureException e) {
-            throw new InvalidTokenException("Invalid token", HttpStatus.UNAUTHORIZED);
+            throw new InvalidTokenException(ExceptionMessages.INVALID_TOKEN, HttpStatus.UNAUTHORIZED);
         }
     }
 
