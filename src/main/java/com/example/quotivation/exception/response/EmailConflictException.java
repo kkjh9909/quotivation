@@ -1,8 +1,11 @@
 package com.example.quotivation.exception.response;
 
-public class EmailConflictException extends RuntimeException {
+import com.example.quotivation.exception.CommonHttpException;
+import org.springframework.http.HttpStatus;
 
-    public EmailConflictException(String message) {
-        super(message);
+public class EmailConflictException extends CommonHttpException {
+
+    public EmailConflictException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 }

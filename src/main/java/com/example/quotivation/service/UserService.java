@@ -8,6 +8,7 @@ import com.example.quotivation.security.PrincipalDetails;
 import com.example.quotivation.entity.User;
 import com.example.quotivation.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +28,7 @@ public class UserService {
     public void signup(UserSignUpReq request) {
         Optional<User> getEmail = userRepository.findByEmail(request.getEmail());
         if(getEmail.isPresent()) {
-            throw new EmailConflictException("이미 가입한 이메일 입니다.");
+            throw new EmailConflictException("이미 가입한 이메일 입니다.", HttpStatus.CONFLICT);
         }
 
         if (!request.getPassword().equals(request.getPasswordConfirm())) {

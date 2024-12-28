@@ -1,5 +1,6 @@
 package com.example.quotivation.aop;
 
+import com.example.quotivation.exception.GlobalExceptionController;
 import com.example.quotivation.service.log.LogSendService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -30,14 +33,28 @@ public class CommonLoggingAspect {
 
     @Around("generalRequest() && !searchRequest()")
     public Object generalLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        String clientIp = getClientIp();
-        String requestUrl = getRequestUrl();
+//        String clientIp = getClientIp();
+//        String requestUrl = getRequestUrl();
+//
+//        logSendService.sendLog(proceedingJoinPoint);
+//
+//        log.info("{} - {}", clientIp, requestUrl);
+//
+//        return proceedingJoinPoint.proceed();
 
-        logSendService.sendLog(proceedingJoinPoint);
+        try {
+            Object result = proceedingJoinPoint.proceed();
 
-        log.info("{} - {}", clientIp, requestUrl);
 
-        return proceedingJoinPoint.proceed();
+            logSendService.sendLog(proceedingJoinPoint);
+
+            return result;
+        } catch (Exception e) {
+            log.info("error 발생");
+
+            logSendService.sendLog(proceedingJoinPoint, e);
+            throw e;
+        }
     }
 
     @Around("searchRequest()")
