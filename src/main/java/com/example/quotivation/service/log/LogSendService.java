@@ -2,10 +2,12 @@ package com.example.quotivation.service.log;
 
 import com.example.quotivation.dto.log.request.LogRequest;
 import com.example.quotivation.exception.CommonHttpException;
+import com.example.quotivation.exception.ExceptionMessages;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LogSendService {
@@ -31,13 +34,21 @@ public class LogSendService {
     private String LOG_SERVER_URL;
 
     public void sendLog(ProceedingJoinPoint joinPoint) {
-        LogRequest log = createLog(joinPoint, null);
-        restTemplate.postForObject(LOG_SERVER_URL, log, Void.class);
+        try {
+            LogRequest log = createLog(joinPoint, null);
+            restTemplate.postForObject(LOG_SERVER_URL, log, Void.class);
+        } catch (Exception e) {
+            log.info(ExceptionMessages.LOG_SERVER_NOT_WORKING, e.getMessage());
+        }
     }
 
     public void sendLog(ProceedingJoinPoint joinPoint, Exception e) {
-        LogRequest log = createLog(joinPoint, e);
-        restTemplate.postForObject(LOG_SERVER_URL, log, Void.class);
+        try {
+            LogRequest log = createLog(joinPoint, e);
+            restTemplate.postForObject(LOG_SERVER_URL, log, Void.class);
+        } catch (Exception error) {
+            log.info(ExceptionMessages.LOG_SERVER_NOT_WORKING, error.getMessage());
+        }
     }
 
     public LogRequest createLog(ProceedingJoinPoint joinPoint, Exception e) {
