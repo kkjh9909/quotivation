@@ -1,5 +1,6 @@
 package com.example.quotivation.dto.log.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,9 +13,9 @@ public class LogRequest {
 
     private String ip;
     private String uri;
-    private int status;
+    private String status;
     private String method;
     private String message;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private Map<String, String> parameters;
 }
