@@ -5,19 +5,25 @@ import com.example.quotivation.exception.CommonHttpException;
 import com.example.quotivation.exception.ExceptionMessages;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,16 +33,41 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LogSendService {
 
+    private final ObjectMapper objectMapper;
+    private final WebClient webClient;
     private final RestTemplate restTemplate;
     private final HttpServletRequest request;
 
     @Value("${mongo.log.uri}")
     private String LOG_SERVER_URL;
 
+    private String createLogMutation;
+    @PostConstruct
+    private void init() {
+        try {
+            ClassPathResource resource = new ClassPathResource("graphql/mutation/createLog.graphql");
+            this.createLogMutation = new String(resource.getInputStream().readAllBytes());
+        } catch(IOException e) {
+            log.error("Failed to load GraphQL Mutation file");
+        }
+    }
+
     public void sendLog(ProceedingJoinPoint joinPoint) {
         try {
-            LogRequest log = createLog(joinPoint, null);
-            restTemplate.postForObject(LOG_SERVER_URL, log, Void.class);
+            Map<String, Object> requestBody = Map.of(
+                    "query", createLogMutation,
+                    "variables", Map.of(
+                            "input", objectMapper.convertValue(createLog(joinPoint, null), Map.class)
+                    )
+            );
+
+            webClient.post()
+                    .uri(LOG_SERVER_URL)
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .doOnError(error -> log.error("❌ Failed to send log to GraphQL server: {}", error.getMessage()))
+                    .subscribe();
         } catch (Exception e) {
             log.info(ExceptionMessages.LOG_SERVER_NOT_WORKING, e.getMessage());
         }
@@ -44,8 +75,20 @@ public class LogSendService {
 
     public void sendLog(ProceedingJoinPoint joinPoint, Exception e) {
         try {
-            LogRequest log = createLog(joinPoint, e);
-            restTemplate.postForObject(LOG_SERVER_URL, log, Void.class);
+            Map<String, Object> requestBody = Map.of(
+                    "query", createLogMutation,
+                    "variables", Map.of(
+                            "input", objectMapper.convertValue(createLog(joinPoint, e), Map.class)
+                    )
+            );
+
+            webClient.post()
+                    .uri(LOG_SERVER_URL)
+                    .bodyValue(requestBody)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .doOnError(error -> log.error("❌ Failed to send log to GraphQL server: {}", error.getMessage()))
+                    .subscribe();
         } catch (Exception error) {
             log.info(ExceptionMessages.LOG_SERVER_NOT_WORKING, error.getMessage());
         }
@@ -63,15 +106,19 @@ public class LogSendService {
 
         String message = e != null ? e.getMessage() : "Success";
 
-        return new LogRequest(
+        LogRequest logRequest = new LogRequest(
                 ip,
                 path,
-                status,
+                String.valueOf(status),
                 method,
                 message,
-                LocalDateTime.now(),
+                LocalDateTime.now().toString(),
                 parameters
         );
+
+        log.info(logRequest.toString());
+
+        return logRequest;
     }
 
     private Map<String, String> extractParameters(ProceedingJoinPoint joinPoint) {

@@ -1,0 +1,12 @@
+mutation CreateLog($input: LogInput!) {
+    createLog(input: $input) {
+        id
+        method
+        uri
+        parameters
+        message
+        ip
+        status
+        timestamp
+    }
+}
