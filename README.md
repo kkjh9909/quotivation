@@ -35,6 +35,8 @@ Quotivation은 명언과 동기부여를 위한 플랫폼으로, 사용자들에
 * MySQL 데이터베이스
 * Docker 설치(선택사항)
 
+<img width="1057" height="680" alt="Image" src="https://github.com/user-attachments/assets/9efb353e-be72-4a42-9a40-01a6452061ec" />
+
 ### 2. 레포지토리 클론   
 ```bash
 git clone https://github.com/kkjh9909/quotivation.git
